@@ -3,7 +3,7 @@
 [![Next.js 16](https://img.shields.io/badge/Next.js-16%20Turbopack-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
 [![Google Gemini GenAI](https://img.shields.io/badge/Google%20GenAI-Gemini%202.5%20Flash-4285F4?style=for-the-badge&logo=google)](https://ai.google.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Strict-3178C6?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
-[![Vitest](https://img.shields.io/badge/Vitest-10%2F10%20Tests%20Passing-729B1B?style=for-the-badge&logo=vitest)](https://vitest.dev/)
+[![Vitest](https://img.shields.io/badge/Vitest-13%2F13%20Tests%20Passing-729B1B?style=for-the-badge&logo=vitest)](https://vitest.dev/)
 
 > **AeroPulse AI** is a GenAI-powered urban air quality and winter smog defense system engineered to help families and communities navigate severe seasonal smog. It provides low-emission daily routines, indoor air quality (IAQ) hacks, and sustainable alternatives tailored to household architecture and vulnerabilities, while **clearly quantifying the direct health and emissions impact of every choice**.
 
@@ -47,8 +47,9 @@
 
 ### Installation
 ```bash
-# Clone or navigate to the directory
-cd "Prompt Wars"
+# Clone repository
+git clone https://github.com/vidhi070518/EventPilot-AI.git
+cd EventPilot-AI
 
 # Install dependencies
 npm install
