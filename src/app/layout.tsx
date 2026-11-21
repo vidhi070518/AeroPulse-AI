@@ -1,20 +1,18 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import type { Metadata } from 'next';
+import './globals.css';
 
 export const metadata: Metadata = {
-  title: "EventPilot AI | Operations Coordination Command Center",
-  description: "Enterprise Operations Coordination Command Center for FIFA World Cup 2026. GenAI-powered Digital Twin telemetry, predictive risk forecasts, and dynamic team dispatches.",
+  title: 'AeroPulse AI — GenAI Urban Air Quality & Smog Defense Assistant',
+  description: 'AI-powered assistant helping families and communities navigate severe winter smog with low-emission routines, indoor air hacks, and sustainable alternatives.',
+  keywords: [
+    'Urban Air Quality',
+    'Winter Smog',
+    'GenAI Assistant',
+    'Corsi-Rosenthal Box',
+    'Thermal Inversion',
+    'PM2.5 Defense',
+    'Prompt Wars'
+  ]
 };
 
 export default function RootLayout({
@@ -23,8 +21,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full antialiased dark">
-      <body className={`${geistSans.variable} ${geistMono.variable} min-h-full bg-slate-950 text-slate-100 flex flex-col`}>
+    <html lang="en" className="dark">
+      <body className="min-h-screen bg-slate-950 text-slate-100 antialiased selection:bg-emerald-500/30 selection:text-emerald-300">
         {children}
       </body>
     </html>

@@ -1,10 +1,9 @@
-import { POST } from "../app/api/copilot/route";
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { POST } from '../app/api/copilot/route';
 
-// Mock the Google GenAI SDK
 const mockGenerateContent = vi.fn();
 
-vi.mock("@google/genai", () => {
+vi.mock('@google/genai', () => {
   return {
     GoogleGenAI: class {
       models = {
@@ -14,94 +13,77 @@ vi.mock("@google/genai", () => {
   };
 });
 
-describe("AI Copilot API Endpoint", () => {
+describe('AeroPulse Copilot API Endpoint', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    process.env.GEMINI_API_KEY = "test-api-key";
-  });
-
-  it("returns error if API key is missing", async () => {
     delete process.env.GEMINI_API_KEY;
-
-    const request = new Request("http://localhost/api/copilot", {
-      method: "POST",
-      body: JSON.stringify({ scenarioKey: "kickoff" })
-    });
-
-    const response = await POST(request);
-    const json = await response.json();
-
-    expect(json.success).toBe(false);
-    expect(json.error).toBe("API_KEY_MISSING");
   });
 
-  it("handles successful live LLM generation and schema validation", async () => {
-    const mockPlan = {
-      name: "Plan Test: Heavy rain gates shift",
-      actions: ["Open auxiliary lanes", "Deploy umbrella stands"],
-      waitTime: 5.5,
-      crowdDensity: 42,
-      riskReduction: 30,
-      staffRequired: "8 guides"
-    };
-
-    const mockResponseText = JSON.stringify({
-      summary: "Rain is causing gate queues to increase.",
-      riskLevel: "MEDIUM",
-      prediction: "Turnstile delays will build up.",
-      confidence: 88,
-      recommendedPlan: "Plan Test: Heavy rain gates shift",
-      plans: [mockPlan]
+  it('rejects requests with missing message body', async () => {
+    const req = new Request('http://localhost:3000/api/copilot', {
+      method: 'POST',
+      body: JSON.stringify({})
     });
 
-    mockGenerateContent.mockResolvedValue({
-      text: mockResponseText
-    });
+    const res = await POST(req as any);
+    const json = await res.json();
 
-    const request = new Request("http://localhost/api/copilot", {
-      method: "POST",
+    expect(res.status).toBe(400);
+    expect(json.success).toBe(false);
+  });
+
+  it('gracefully uses intelligent fallback engine when GEMINI_API_KEY is not set', async () => {
+    const req = new Request('http://localhost:3000/api/copilot', {
+      method: 'POST',
       body: JSON.stringify({
-        scenarioKey: "rain",
-        scenarioName: "Heavy Rain",
-        metrics: { stadiumHealth: 80, crowdDensity: 70, activeAlerts: 1, avgWaitTime: 12 },
-        sections: { parking: "yellow" },
-        weather: "17C | Rain",
-        activeAlerts: 1
+        message: 'How do I build a Corsi-Rosenthal box for winter smog?',
+        location: {
+          name: 'Delhi NCR',
+          neighborhood: 'Anand Vihar',
+          aqi: 438,
+          pm25: 395,
+          inversionCeilingMeters: 130,
+          primaryPollutant: 'PM2.5'
+        }
       })
     });
 
-    const response = await POST(request);
-    const json = await response.json();
+    const res = await POST(req as any);
+    const json = await res.json();
 
+    expect(res.status).toBe(200);
     expect(json.success).toBe(true);
-    expect(json.data.summary).toBe("Rain is causing gate queues to increase.");
-    expect(json.data.riskLevel).toBe("MEDIUM");
-    expect(json.data.plans[0].name).toBe("Plan Test: Heavy rain gates shift");
+    expect(json.data.source).toBe('aeropulse-expert-engine');
+    expect(json.data.reply).toContain('Corsi-Rosenthal');
+    expect(json.data.suggestions).toBeDefined();
+    expect(json.data.suggestions.length).toBeGreaterThan(0);
   });
 
-  it("returns validation error if model response format is invalid", async () => {
-    // Missing required plans field
-    const invalidResponseText = JSON.stringify({
-      summary: "Invalid payload mock",
-      riskLevel: "MEDIUM",
-      prediction: "Should fail validation",
-      confidence: 88,
-      recommendedPlan: "None"
+  it('calls GoogleGenAI generateContent when GEMINI_API_KEY is provided', async () => {
+    process.env.GEMINI_API_KEY = 'test-key-123';
+
+    mockGenerateContent.mockResolvedValueOnce({
+      text: '### Customized Smog Strategy\nHere is your tailored defense.'
     });
 
-    mockGenerateContent.mockResolvedValue({
-      text: invalidResponseText
+    const req = new Request('http://localhost:3000/api/copilot', {
+      method: 'POST',
+      body: JSON.stringify({
+        message: 'When should I open windows today?',
+        location: {
+          name: 'Delhi NCR',
+          aqi: 438,
+          pm25: 395
+        }
+      })
     });
 
-    const request = new Request("http://localhost/api/copilot", {
-      method: "POST",
-      body: JSON.stringify({ scenarioKey: "rain" })
-    });
+    const res = await POST(req as any);
+    const json = await res.json();
 
-    const response = await POST(request);
-    const json = await response.json();
-
-    expect(json.success).toBe(false);
-    expect(json.error).toBe("API_VALIDATION_ERROR");
+    expect(res.status).toBe(200);
+    expect(json.success).toBe(true);
+    expect(json.data.source).toBe('gemini-2.5-flash');
+    expect(json.data.reply).toContain('Customized Smog Strategy');
   });
 });
