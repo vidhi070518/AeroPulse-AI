@@ -3,21 +3,39 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --color-brand-50: #ecfdf5;
-  --color-brand-100: #d1fae5;
-  --color-brand-500: #10b981;
-  --color-brand-600: #059669;
-  --color-brand-700: #047857;
+  --color-brand-50: #fbf8f3;
+  --color-brand-100: #f4eee3;
+  --color-brand-500: #0f766e;
+  --color-brand-600: #0d6b63;
+  --color-brand-700: #115e59;
+
+  /* Warm Organic Editorial Palette: Remap cold slate & stark white to warm tactile stone/linen/ivory */
+  --color-white: #fffdfa;
+  --color-slate-50: #faf8f5;
+  --color-slate-100: #f4f0e8;
+  --color-slate-200: #e8e3da;
+  --color-slate-300: #d7d0c5;
+  --color-slate-400: #a8a095;
+  --color-slate-500: #787065;
+  --color-slate-600: #575047;
+  --color-slate-700: #443e37;
+  --color-slate-800: #2b2723;
+  --color-slate-900: #1c1917;
+  --color-slate-950: #12100e;
 }
 
 :root {
-  --background: #f8fafc;
-  --foreground: #0f172a;
+  --background: #fbf9f5;
+  --foreground: #1c1917;
+  --card-bg: #fffdfa;
+  --card-border: #e7e2da;
 }
 
 .dark {
-  --background: #090d16;
-  --foreground: #f8fafc;
+  --background: #151311;
+  --foreground: #fafaf9;
+  --card-bg: #1f1c19;
+  --card-border: #332e29;
 }
 
 body {
@@ -30,15 +48,15 @@ body {
 
 /* Polished Card & Glass Surfaces */
 .clean-card {
-  background-color: #ffffff;
-  border: 1px solid rgba(226, 232, 240, 0.85);
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.04);
+  background-color: var(--card-bg);
+  border: 1px solid var(--card-border);
+  box-shadow: 0 1px 3px 0 rgba(40, 30, 20, 0.03), 0 1px 2px -1px rgba(40, 30, 20, 0.03);
 }
 
 .dark .clean-card {
-  background-color: rgba(15, 23, 42, 0.75);
-  border: 1px solid rgba(51, 65, 85, 0.6);
-  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
+  background-color: var(--card-bg);
+  border: 1px solid var(--card-border);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.6);
 }
 
 /* Clean Custom Scrollbars */
@@ -52,12 +70,12 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(148, 163, 184, 0.5);
+  background: rgba(168, 162, 158, 0.45);
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(100, 116, 139, 0.8);
+  background: rgba(120, 113, 108, 0.7);
 }
 
 /* Hide scrollbars cleanly */
@@ -69,19 +87,21 @@ body {
   scrollbar-width: none !important;
 }
 
-/* Subtle backdrop gradient & atmospheric canvas */
+/* Subtle warm ambient mesh canvas */
 .ambient-mesh {
   background-image: 
-    radial-gradient(at 10% 10%, rgba(16, 185, 129, 0.04) 0px, transparent 50%),
-    radial-gradient(at 90% 0%, rgba(59, 130, 246, 0.03) 0px, transparent 50%),
-    radial-gradient(at 50% 90%, rgba(244, 63, 94, 0.03) 0px, transparent 50%);
+    radial-gradient(at 0% 0%, rgba(217, 119, 6, 0.05) 0px, transparent 45%),
+    radial-gradient(at 100% 0%, rgba(15, 118, 110, 0.05) 0px, transparent 50%),
+    radial-gradient(at 50% 100%, rgba(194, 65, 12, 0.03) 0px, transparent 50%);
+  background-color: var(--background);
 }
 
 .dark .ambient-mesh {
   background-image: 
-    radial-gradient(at 10% 10%, rgba(16, 185, 129, 0.07) 0px, transparent 50%),
-    radial-gradient(at 90% 0%, rgba(99, 102, 241, 0.06) 0px, transparent 50%),
-    radial-gradient(at 50% 90%, rgba(244, 63, 94, 0.05) 0px, transparent 50%);
+    radial-gradient(at 0% 0%, rgba(217, 119, 6, 0.07) 0px, transparent 45%),
+    radial-gradient(at 100% 0%, rgba(15, 118, 110, 0.08) 0px, transparent 50%),
+    radial-gradient(at 50% 100%, rgba(180, 83, 9, 0.05) 0px, transparent 50%);
+  background-color: var(--background);
 }
 
 /* Print-Specific Styles for Clean Air Action Brief & Reports */
