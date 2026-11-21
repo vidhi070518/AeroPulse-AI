@@ -9,12 +9,13 @@ import {
   AlertTriangle, 
   Sliders, 
   Sparkles, 
-  Award,
+  ShieldCheck,
   Layers,
   Thermometer,
   Compass,
   Sun,
-  Moon
+  Moon,
+  FileText
 } from 'lucide-react';
 
 interface HeaderProps {
@@ -25,7 +26,8 @@ interface HeaderProps {
   onOpenCopilot: () => void;
   emergencyMode: boolean;
   onToggleEmergencyMode: () => void;
-  promptCredits: number;
+  airShieldScore: number;
+  onExportReport: () => void;
   darkMode: boolean;
   onToggleDarkMode: () => void;
 }
@@ -38,7 +40,8 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenCopilot,
   emergencyMode,
   onToggleEmergencyMode,
-  promptCredits,
+  airShieldScore,
+  onExportReport,
   darkMode,
   onToggleDarkMode
 }) => {
@@ -109,7 +112,7 @@ export const Header: React.FC<HeaderProps> = ({
                   </span>
                 </div>
                 <p className="text-xs text-slate-500 dark:text-slate-400 hidden sm:block">
-                  Urban Air Quality &amp; Winter Smog Defense Copilot
+                  Urban Air Quality &amp; Winter Smog Defense System
                 </p>
               </div>
             </div>
@@ -117,15 +120,17 @@ export const Header: React.FC<HeaderProps> = ({
             {/* Mobile Actions */}
             <div className="flex items-center gap-1.5 lg:hidden">
               <button
+                type="button"
                 onClick={onToggleDarkMode}
-                className="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors"
+                className="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
                 aria-label="Toggle theme"
               >
                 {darkMode ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-600" />}
               </button>
               <button
+                type="button"
                 onClick={onToggleEmergencyMode}
-                className={`px-2.5 py-1.5 rounded-lg text-xs font-semibold border flex items-center gap-1 ${
+                className={`px-2.5 py-1.5 rounded-lg text-xs font-semibold border flex items-center gap-1 cursor-pointer ${
                   emergencyMode
                     ? 'bg-rose-600 text-white border-rose-600'
                     : 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 border-slate-200 dark:border-slate-700'
@@ -177,13 +182,14 @@ export const Header: React.FC<HeaderProps> = ({
               <span>{currentLocation.windSpeedKmh} km/h</span>
             </div>
 
-            {/* Right Hand Controls: Profile, Theme, Credits, Copilot */}
+            {/* Right Hand Controls: Profile, Score, Theme, Copilot */}
             <div className="flex items-center gap-2 ml-auto lg:ml-0">
               
               {/* Profile Config */}
               <button
+                type="button"
                 onClick={onOpenHouseholdModal}
-                className="bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 rounded-xl px-2.5 py-1.5 text-xs font-medium flex items-center gap-1.5 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors shadow-2xs"
+                className="bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 rounded-xl px-2.5 py-1.5 text-xs font-medium flex items-center gap-1.5 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors shadow-2xs cursor-pointer"
                 title="Configure Family Members & Home Construction"
               >
                 <Sliders className="w-3.5 h-3.5 text-teal-600 dark:text-teal-400" />
@@ -193,18 +199,20 @@ export const Header: React.FC<HeaderProps> = ({
 
               {/* Theme Toggle Button */}
               <button
+                type="button"
                 onClick={onToggleDarkMode}
-                className="hidden lg:flex p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 transition-colors"
+                className="hidden lg:flex p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 transition-colors cursor-pointer"
                 title={darkMode ? 'Switch to Light Theme' : 'Switch to Dark Theme'}
                 aria-label="Toggle Theme"
               >
                 {darkMode ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-600" />}
               </button>
 
-              {/* Desktop Smog Protocol Button */}
+              {/* Smog Emergency Protocol Button */}
               <button
+                type="button"
                 onClick={onToggleEmergencyMode}
-                className={`hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all ${
+                className={`hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
                   emergencyMode
                     ? 'bg-rose-600 text-white border-rose-600 shadow-xs'
                     : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:border-rose-300 dark:hover:border-rose-800'
@@ -214,20 +222,32 @@ export const Header: React.FC<HeaderProps> = ({
                 <span>{emergencyMode ? 'Emergency Active' : 'Smog Protocol'}</span>
               </button>
 
-              {/* PromptWars Credits Badge */}
+              {/* Professional Household Shield Score Badge */}
               <div 
-                className="flex items-center gap-1.5 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/60 rounded-xl px-2.5 py-1.5 text-xs text-amber-800 dark:text-amber-300 font-semibold cursor-pointer shadow-2xs"
-                title="PromptWars Leaderboard Credits accumulated"
+                className="flex items-center gap-1.5 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 rounded-xl px-2.5 py-1.5 text-xs text-emerald-800 dark:text-emerald-300 font-semibold shadow-2xs"
+                title="Overall Household Air Shield Rating"
               >
-                <Award className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
-                <span>{promptCredits.toLocaleString()}</span>
-                <span className="text-[10px] opacity-75 font-normal">CR</span>
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                <span>Shield:</span>
+                <span className="text-slate-900 dark:text-white font-bold">{airShieldScore}%</span>
               </div>
+
+              {/* Export Clean Air Report */}
+              <button
+                type="button"
+                onClick={onExportReport}
+                className="hidden xl:flex items-center gap-1.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 rounded-xl px-2.5 py-1.5 text-xs font-medium transition-colors cursor-pointer shadow-2xs"
+                title="Export Clean Air Action Summary"
+              >
+                <FileText className="w-3.5 h-3.5 text-slate-500" />
+                <span>Report</span>
+              </button>
 
               {/* Ask Copilot Button */}
               <button
+                type="button"
                 onClick={onOpenCopilot}
-                className="bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white rounded-xl px-3 py-1.5 text-xs font-semibold flex items-center gap-1.5 transition-all shadow-xs"
+                className="bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white rounded-xl px-3 py-1.5 text-xs font-semibold flex items-center gap-1.5 transition-all shadow-xs cursor-pointer"
               >
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>Ask Copilot</span>

@@ -1,6 +1,5 @@
 # 🌬️ AeroPulse AI — Urban Air Quality & Smog Defense Assistant
 
-[![PromptWars: Virtual - Rank 1 Target](https://img.shields.io/badge/PromptWars-Virtual%20Challenge-emerald?style=for-the-badge)](https://promptwars.ai)
 [![Next.js 16](https://img.shields.io/badge/Next.js-16%20Turbopack-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
 [![Google Gemini GenAI](https://img.shields.io/badge/Google%20GenAI-Gemini%202.5%20Flash-4285F4?style=for-the-badge&logo=google)](https://ai.google.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Strict-3178C6?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
@@ -10,24 +9,19 @@
 
 ---
 
-## 🏆 Built for PromptWars: Virtual Hackathon
+### Core System Capabilities
 
-This application is built specifically to address the hackathon prompt:
-> *"Create a GenAI-powered assistant that helps families and communities navigate severe winter smog and urban air pollution. The application should suggest low-emission daily routines, indoor air quality hacks, and sustainable alternatives tailored to their location and lifestyle, while clearly explaining the direct impact of their choices."*
-
-### How AeroPulse AI Addresses Every Core Requirement:
-
-| Prompt Requirement | AeroPulse AI Implementation |
+| Capability | Technical Implementation |
 | :--- | :--- |
-| **GenAI-Powered Assistant** | Multi-modal **AeroPulse AI Copilot** powered by `@google/genai` (Gemini 2.5 Flash) with voice dictation (Web Speech API) and a 100% reliable domain fallback engine for judges. |
-| **Tailored to Location** | Real-time atmospheric profiles for major smog hotspots (**Delhi NCR**, **Beijing**, **Lahore**, **Salt Lake City**, **London**, **Milan**) including 6-gas pollutants (PM2.5, PM10, NO2, CO, SO2, O3) and thermal inversion heights. |
-| **Tailored to Lifestyle** | Household profiler modeling family composition (infants, asthmatics, seniors, pets), building envelope leakage, kitchen stove types, and commute modes. |
+| **GenAI-Powered Assistant** | Multi-modal **AeroPulse AI Copilot** powered by `@google/genai` (Gemini 2.5 Flash) with voice dictation (Web Speech API) and an expert fallback engine for reliable guidance. |
+| **Location & Inversion Dynamics** | Real-time atmospheric profiles for major smog hotspots (**Delhi NCR**, **Beijing**, **Lahore**, **Salt Lake City**, **London**, **Milan**) including 6-gas pollutants (PM2.5, PM10, NO2, CO, SO2, O3) and thermal inversion heights. |
+| **Household & Vulnerability Profiling** | Household profiler modeling family composition (infants, asthmatics, seniors, pets), building envelope leakage, kitchen stove types, and commute modes. |
 | **Low-Emission Daily Routines** | Dynamic hourly routine synchronized to the **diurnal temperature inversion curve** (identifying hazardous morning ground traps vs the **12:30–2:30 PM solar zenith safe ventilation window**) with 1-click **.ICS Calendar export**. |
 | **Indoor Air Quality (IAQ) Hacks** | Complete catalog of physics-backed hacks: **DIY Corsi-Rosenthal Box** builder with an interactive room CADR/CFM calculator, kitchen chimney negative pressure relief, damp-microfiber mopping (eliminating dust resuspension), and debunking the houseplant myth vs activated carbon. |
 | **Sustainable Alternatives Matrix** | Side-by-side transition matrix (e.g. Solo ICE Car ➔ Electric Metro Rail; LPG Gas Flame ➔ Electric Induction Cooktop) displaying emissions cut percentages (-78% to -92%), monthly dollar savings, and health bonuses. |
-| **Direct Impact Clearly Explained** | Quantified personal and environmental metrics: **Equivalent Cigarettes Avoided** (Berkeley Earth formula: 1 cig ≈ 22 µg/m³ PM2.5/24h), **Deep Lung Deposition Cut %**, **kg CO2e Prevented**, and **Monthly Energy Cost Saved**. |
-| **Helps Communities** | **Community Smog Shield**: School Gate Anti-Idling Zone pledges, Clean-Air Walking Corridors, Bulk MERV-13 Filter Co-ops, and a rapid crowdsourced trash/stubble burning incident reporter. |
-| **Gamification & Prompt Credits** | Integrated PromptWars swag store tracker (accumulate credits across challenges to unlock Hoodies, Backpacks, Desk Pads, and Tech Pouches). |
+| **Direct Impact Clearly Quantified** | Quantified personal and environmental metrics: **Equivalent Cigarettes Avoided** (Berkeley Earth formula: 1 cig ≈ 22 µg/m³ PM2.5/24h), **Deep Lung Deposition Cut %**, **kg CO2e Prevented**, and **Monthly Energy Cost Saved**. |
+| **Community Air Shield** | **Community Smog Shield**: School Gate Anti-Idling Zone pledges, Clean-Air Walking Corridors, Bulk MERV-13 Filter Co-ops, and a rapid crowdsourced trash/stubble burning incident reporter. |
+| **Executive Clean Air Brief** | One-click printable and downloadable executive action summary report for households and institutions. |
 
 ---
 
@@ -90,12 +84,7 @@ npm run test
 
 - **Framework:** Next.js 16 (App Router + Turbopack)
 - **Language:** TypeScript 5 (Strict Mode)
-- **Styling:** Tailwind CSS v4 + Glassmorphism Design System
+- **Styling:** Tailwind CSS v4 + Clean Neutral Editorial Design System
 - **Icons:** Lucide React
 - **GenAI Engine:** Google Gemini (`@google/genai` with Gemini 2.5 Flash) + Expert Fallback Engine
 - **Testing:** Vitest + React Testing Library + JSDOM
-
----
-
-*Engineered with precision for the PromptWars: Virtual Hackathon.*
-

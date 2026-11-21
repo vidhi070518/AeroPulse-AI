@@ -17,7 +17,7 @@ interface DailyRoutineSchedulerProps {
   routineItems: DailyRoutineItem[];
   location: LocationCity;
   household: HouseholdProfile;
-  onAwardCredits: (amount: number, reason: string) => void;
+  onActionComplete: (actionTitle: string) => void;
   onOpenCopilot: (prompt: string) => void;
 }
 
@@ -25,7 +25,7 @@ export const DailyRoutineScheduler: React.FC<DailyRoutineSchedulerProps> = ({
   routineItems,
   location,
   household,
-  onAwardCredits,
+  onActionComplete,
   onOpenCopilot
 }) => {
   const [completedMap, setCompletedMap] = useState<Record<string, boolean>>({});
@@ -34,7 +34,7 @@ export const DailyRoutineScheduler: React.FC<DailyRoutineSchedulerProps> = ({
     setCompletedMap(prev => {
       const nextState = !prev[id];
       if (nextState) {
-        onAwardCredits(150, `Completed action: ${title}`);
+        onActionComplete(title);
       }
       return { ...prev, [id]: nextState };
     });
@@ -56,7 +56,7 @@ export const DailyRoutineScheduler: React.FC<DailyRoutineSchedulerProps> = ({
     routineItems.forEach((item, idx) => {
       icsContent.push(
         'BEGIN:VEVENT',
-        `UID:aeropulse-${dateStr}-${idx}@promptwars.ai`,
+        `UID:aeropulse-${dateStr}-${idx}@aeropulse.ai`,
         `DTSTAMP:${dateStr}T120000Z`,
         `DTSTART:${dateStr}T${item.timeRange.slice(0, 2)}0000Z`,
         `DTEND:${dateStr}T${item.timeRange.slice(8, 10)}0000Z`,
@@ -84,8 +84,6 @@ export const DailyRoutineScheduler: React.FC<DailyRoutineSchedulerProps> = ({
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
-
-    onAwardCredits(200, 'Exported Smog Routine to Calendar (.ICS)');
   };
 
   const completedCount = Object.values(completedMap).filter(Boolean).length;
@@ -110,13 +108,14 @@ export const DailyRoutineScheduler: React.FC<DailyRoutineSchedulerProps> = ({
         <div className="flex items-center gap-2.5">
           <div className="bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-1.5 text-xs text-slate-700 dark:text-slate-300 flex items-center gap-2">
             <span className="font-semibold text-emerald-700 dark:text-emerald-400">{completedCount} / {routineItems.length}</span>
-            <span className="text-slate-500">Completed</span>
+            <span className="text-slate-500">Actions Logged</span>
           </div>
 
           <button
+            type="button"
             onClick={handleExportICS}
-            className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold px-3 py-1.5 rounded-xl flex items-center gap-1.5 transition-all shadow-xs"
-            title="Download .ICS file to add to Google Calendar or Apple Calendar"
+            className="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold px-3 py-1.5 rounded-xl flex items-center gap-1.5 transition-all shadow-xs cursor-pointer"
+            title="Download .ICS file to add to Google Calendar, Apple Calendar, or Outlook"
           >
             <Download className="w-3.5 h-3.5" />
             <span>Export to Calendar (.ICS)</span>
@@ -146,9 +145,10 @@ export const DailyRoutineScheduler: React.FC<DailyRoutineSchedulerProps> = ({
                 {/* Left: Checkbox + Phase + Title */}
                 <div className="flex items-start gap-3.5">
                   <button
+                    type="button"
                     onClick={() => toggleComplete(item.id, item.title)}
-                    className="mt-0.5 text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors shrink-0"
-                    title={isDone ? 'Mark as incomplete' : 'Mark completed (+150 credits)'}
+                    className="mt-0.5 text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors shrink-0 cursor-pointer"
+                    title={isDone ? 'Mark as incomplete' : 'Mark action completed'}
                   >
                     {isDone ? (
                       <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
@@ -217,8 +217,9 @@ export const DailyRoutineScheduler: React.FC<DailyRoutineSchedulerProps> = ({
       <div className="mt-5 p-3.5 bg-slate-50 dark:bg-slate-950/60 border border-slate-200/80 dark:border-slate-800 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-500 dark:text-slate-400">
         <span>Need specialized routine adjustments for school sports or sensitive family members?</span>
         <button
+          type="button"
           onClick={() => onOpenCopilot('Customize my daily routine for a 7-year-old child and 68-year-old asthmatic grandparent')}
-          className="text-emerald-700 dark:text-emerald-400 hover:underline font-semibold flex items-center gap-1"
+          className="text-emerald-700 dark:text-emerald-400 hover:underline font-semibold flex items-center gap-1 cursor-pointer"
         >
           <Sparkles className="w-3 h-3" />
           Ask Copilot to Refine

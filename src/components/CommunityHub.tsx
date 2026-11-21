@@ -14,10 +14,10 @@ import {
 } from 'lucide-react';
 
 interface CommunityHubProps {
-  onAwardCredits: (amount: number, reason: string) => void;
+  onPledgeUpdate: (initiativeTitle: string, pledged: boolean) => void;
 }
 
-export const CommunityHub: React.FC<CommunityHubProps> = ({ onAwardCredits }) => {
+export const CommunityHub: React.FC<CommunityHubProps> = ({ onPledgeUpdate }) => {
   const [initiatives, setInitiatives] = useState<CommunityInitiative[]>(COMMUNITY_INITIATIVES);
   const [reportText, setReportText] = useState('');
   const [reportSubmitted, setReportSubmitted] = useState(false);
@@ -26,9 +26,7 @@ export const CommunityHub: React.FC<CommunityHubProps> = ({ onAwardCredits }) =>
     setInitiatives(prev => prev.map(item => {
       if (item.id === id) {
         const nextPledged = !item.userPledged;
-        if (nextPledged) {
-          onAwardCredits(300, `Pledged to community initiative: ${item.title}`);
-        }
+        onPledgeUpdate(item.title, nextPledged);
         return {
           ...item,
           userPledged: nextPledged,
@@ -44,11 +42,11 @@ export const CommunityHub: React.FC<CommunityHubProps> = ({ onAwardCredits }) =>
     e.preventDefault();
     if (!reportText.trim()) return;
     setReportSubmitted(true);
-    onAwardCredits(500, 'Reported localized smog hotspot to community watch');
+    onPledgeUpdate('Community Hotspot Report', true);
     setTimeout(() => {
       setReportText('');
       setReportSubmitted(false);
-    }, 4000);
+    }, 4500);
   };
 
   const totalSmogAbated = initiatives.reduce((sum, item) => sum + item.collectiveSmogAbatedKg, 0);
@@ -127,12 +125,13 @@ export const CommunityHub: React.FC<CommunityHubProps> = ({ onAwardCredits }) =>
             <div className="mt-4 pt-3.5 border-t border-slate-200/80 dark:border-slate-800 flex items-center justify-between">
               <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
                 <Users className="w-3.5 h-3.5 text-slate-400" />
-                <span><strong>{item.activePledgers}</strong> families pledged</span>
+                <span><strong>{item.activePledgers}</strong> families participating</span>
               </div>
 
               <button
+                type="button"
                 onClick={() => togglePledge(item.id)}
-                className={`text-xs font-semibold px-3 py-1.5 rounded-xl flex items-center gap-1.5 transition-all ${
+                className={`text-xs font-semibold px-3 py-1.5 rounded-xl flex items-center gap-1.5 transition-all cursor-pointer ${
                   item.userPledged
                     ? 'bg-emerald-600 text-white shadow-xs'
                     : 'bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700'
@@ -141,12 +140,12 @@ export const CommunityHub: React.FC<CommunityHubProps> = ({ onAwardCredits }) =>
                 {item.userPledged ? (
                   <>
                     <Check className="w-3.5 h-3.5" />
-                    <span>Pledged (+300 CR)</span>
+                    <span>Pledged Active</span>
                   </>
                 ) : (
                   <>
                     <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
-                    <span>Take the Pledge</span>
+                    <span>Join Initiative</span>
                   </>
                 )}
               </button>
@@ -159,16 +158,16 @@ export const CommunityHub: React.FC<CommunityHubProps> = ({ onAwardCredits }) =>
       <div className="mt-6 p-5 bg-slate-50 dark:bg-slate-950/60 border border-slate-200/80 dark:border-slate-800 rounded-2xl">
         <div className="flex items-center gap-2 text-rose-700 dark:text-rose-400 font-bold text-sm">
           <Megaphone className="w-4 h-4 text-rose-500" />
-          <span>Spot &amp; Report Localized Smog Hotspot (Trash Burning / Diesel Genset)</span>
+          <span>Report Localized Smog Hotspot (Open Burning / Diesel Genset)</span>
         </div>
         <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-          Crowdsource illegal leaf burning, open trash fires, or industrial chimney leaks with immediate geo-alerts.
+          Crowdsource unauthorized leaf burning, open trash combustion, or industrial generator emissions with instant logging to environmental monitors.
         </p>
 
         {reportSubmitted ? (
-          <div className="mt-3 p-3 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 rounded-xl text-emerald-800 dark:text-emerald-300 text-xs flex items-center gap-2">
+          <div className="mt-3.5 p-3.5 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 rounded-xl text-emerald-800 dark:text-emerald-300 text-xs flex items-center gap-2">
             <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-            <span>Thank you! Hotspot reported to nodal municipal officers. +500 Prompt Credits awarded!</span>
+            <span>Thank you. Incident report successfully logged to local pollution control authorities.</span>
           </div>
         ) : (
           <form onSubmit={handleReportSubmit} className="mt-3.5 flex flex-col sm:flex-row gap-2">
@@ -176,23 +175,23 @@ export const CommunityHub: React.FC<CommunityHubProps> = ({ onAwardCredits }) =>
               type="text"
               value={reportText}
               onChange={(e) => setReportText(e.target.value)}
-              placeholder="e.g., Open leaf burning spotted near Sector 14 park boundary wall..."
+              placeholder="e.g. Open leaf burning spotted near Sector 14 park perimeter..."
               className="flex-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-3.5 py-2 text-xs text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:border-emerald-500"
             />
             <button
               type="button"
-              className="bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 px-3.5 py-2 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors"
-              title="Attach photo"
+              className="bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 px-3.5 py-2 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+              title="Attach photo verification"
             >
               <Camera className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Add Photo</span>
             </button>
             <button
               type="submit"
-              className="bg-rose-600 hover:bg-rose-700 text-white font-semibold px-4 py-2 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-all shadow-xs"
+              className="bg-rose-600 hover:bg-rose-700 text-white font-semibold px-4 py-2 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-all shadow-xs cursor-pointer"
             >
               <Send className="w-3.5 h-3.5" />
-              <span>Broadcast Alert</span>
+              <span>Log Incident</span>
             </button>
           </form>
         )}
