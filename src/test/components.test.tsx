@@ -1,9 +1,10 @@
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import React from 'react';
 import { AirQualityOverview } from '../components/AirQualityOverview';
 import { DirectImpactMeter } from '../components/DirectImpactMeter';
 import { HomeAirTwin } from '../components/HomeAirTwin';
+import { Header } from '../components/Header';
 import { LOCATION_PRESETS, DEFAULT_HOUSEHOLD } from '../data/mockData';
 import { calculateDirectImpact } from '../utils/airCalculations';
 import { HomeTwinState } from '../types';
@@ -53,6 +54,48 @@ describe('UI Components Render Suite', () => {
     expect(screen.getByText(/Kitchen Zone/i)).toBeInTheDocument();
     expect(screen.getByText(/Living Area/i)).toBeInTheDocument();
     expect(screen.getByText(/Bedroom Haven/i)).toBeInTheDocument();
+  });
+
+  it('switches DirectImpactMeter to Before vs After Delta comparison view', () => {
+    const metrics = calculateDirectImpact(delhi, DEFAULT_HOUSEHOLD, twinState);
+    render(
+      <DirectImpactMeter
+        metrics={metrics}
+        onOpenCopilotWithContext={vi.fn()}
+      />
+    );
+
+    const deltaButton = screen.getByText(/Before vs. After Delta/i);
+    expect(deltaButton).toBeInTheDocument();
+    fireEvent.click(deltaButton);
+
+    expect(screen.getByText(/Unmitigated Conventional Baseline/i)).toBeInTheDocument();
+    expect(screen.getByText(/AeroPulse Shielded Defense/i)).toBeInTheDocument();
+  });
+
+  it('renders Header with location selector and simulator trigger', () => {
+    const onOpenCustomMock = vi.fn();
+    render(
+      <Header
+        currentLocation={delhi}
+        onSelectLocation={vi.fn()}
+        household={DEFAULT_HOUSEHOLD}
+        onOpenHouseholdModal={vi.fn()}
+        onOpenCopilot={vi.fn()}
+        emergencyMode={false}
+        onToggleEmergencyMode={vi.fn()}
+        airShieldScore={88}
+        onExportReport={vi.fn()}
+        darkMode={false}
+        onToggleDarkMode={vi.fn()}
+        onOpenCustomLocationModal={onOpenCustomMock}
+      />
+    );
+
+    expect(screen.getByText(/AeroPulse/i)).toBeInTheDocument();
+    expect(screen.getByText(/\+ Sim/i)).toBeInTheDocument();
+    fireEvent.click(screen.getByText(/\+ Sim/i));
+    expect(onOpenCustomMock).toHaveBeenCalledTimes(1);
   });
 });
 

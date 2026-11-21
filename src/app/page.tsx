@@ -27,6 +27,7 @@ import { CommunityHub } from '../components/CommunityHub';
 import { CopilotDrawer } from '../components/CopilotDrawer';
 import { HouseholdModal } from '../components/HouseholdModal';
 import { SmogEmergencyModal } from '../components/SmogEmergencyModal';
+import { CustomLocationModal } from '../components/CustomLocationModal';
 import { 
   Activity, 
   Home, 
@@ -39,7 +40,8 @@ import {
   Printer,
   Download,
   X,
-  FileText
+  FileText,
+  Copy
 } from 'lucide-react';
 
 export default function HomeDashboard() {
@@ -113,6 +115,18 @@ export default function HomeDashboard() {
   const [householdModalOpen, setHouseholdModalOpen] = useState<boolean>(false);
   const [emergencyModalOpen, setEmergencyModalOpen] = useState<boolean>(false);
   const [reportModalOpen, setReportModalOpen] = useState<boolean>(false);
+  const [customLocationModalOpen, setCustomLocationModalOpen] = useState<boolean>(false);
+
+  // Close report modal on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && reportModalOpen) {
+        setReportModalOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [reportModalOpen]);
 
   const contentSectionRef = useRef<HTMLDivElement>(null);
 
@@ -138,6 +152,33 @@ export default function HomeDashboard() {
   const handleOpenCopilotWithPrompt = (prompt: string) => {
     setCopilotInitialPrompt(prompt);
     setCopilotOpen(true);
+  };
+
+  const handleCopyMarkdownPlan = () => {
+    const text = `# Household Clean Air Action Brief: ${currentLocation.name}
+Date: ${new Date().toLocaleDateString()}
+Location: ${currentLocation.name} (${currentLocation.country})
+Air Quality Status: AQI ${currentLocation.aqi} | PM2.5: ${currentLocation.pm25} µg/m³
+Overall Air Shield: ${airShieldScore}% Optimal
+
+## Direct Impact Metrics
+- Inhaled Cigarettes Avoided: ${impactMetrics.equivalentCigarettesAvoidedDay} / person / day
+- Deep Lung Deposition Cut: -${impactMetrics.pm25DoseReductionPercent}%
+- Community CO₂ Prevented: ${impactMetrics.co2SavedKgMonth} kg/mo
+- Monthly Energy & Health Savings: $${impactMetrics.energyCostSavedUsdMonth}/mo
+
+## Prescribed Daily Actions
+1. Thermal Inversion Window: Restrict cross-ventilation strictly to 12:30 PM - 2:30 PM. Keep windows sealed between 6:00 PM and 11:30 AM.
+2. Clean Haven Room: Maintain sleeping haven below 15 µg/m³ with dedicated HEPA/Corsi-Rosenthal filter.
+3. Kitchen Mitigation: Cook with induction or run exhaust with cracked intake window to prevent apartment depressurization.
+4. Cleaning: Damp microfiber mop twice weekly; avoid dry sweeping.
+
+AeroPulse AI — Urban Air Quality & Winter Smog Defense System`;
+
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(text);
+      showToast('Copied Clean Air Action Brief to clipboard');
+    }
   };
 
   const handleTabChange = (tabId: typeof activeTab) => {
@@ -210,6 +251,7 @@ export default function HomeDashboard() {
         onExportReport={() => setReportModalOpen(true)}
         darkMode={darkMode}
         onToggleDarkMode={toggleDarkMode}
+        onOpenCustomLocationModal={() => setCustomLocationModalOpen(true)}
       />
 
       {/* Main Content Area */}
@@ -381,6 +423,16 @@ export default function HomeDashboard() {
         onExecuteProtocol={handleExecuteEmergencyProtocol}
       />
 
+      <CustomLocationModal
+        isOpen={customLocationModalOpen}
+        onClose={() => setCustomLocationModalOpen(false)}
+        onApplyLocation={(newLoc) => {
+          setCurrentLocation(newLoc);
+          if (newLoc.aqi > 300) setEmergencyMode(true);
+          showToast(`Applied air environment: ${newLoc.name}`);
+        }}
+      />
+
       {/* Executive Clean Air Report Modal */}
       {reportModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -388,7 +440,7 @@ export default function HomeDashboard() {
             onClick={() => setReportModalOpen(false)}
             className="fixed inset-0 bg-slate-900/40 dark:bg-slate-950/70 backdrop-blur-xs" 
           />
-          <div className="relative w-full max-w-2xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-2xl z-10 max-h-[88vh] overflow-y-auto">
+          <div id="printable-action-brief" className="relative w-full max-w-2xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-2xl z-10 max-h-[88vh] overflow-y-auto">
             <div className="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800">
               <div className="flex items-center gap-2.5">
                 <div className="p-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">
@@ -402,7 +454,7 @@ export default function HomeDashboard() {
               <button 
                 type="button"
                 onClick={() => setReportModalOpen(false)}
-                className="p-1 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-white"
+                className="p-1 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-white no-print"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -457,9 +509,18 @@ export default function HomeDashboard() {
               </div>
             </div>
 
-            <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+            <div className="pt-4 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between no-print">
               <span className="text-[11px] text-slate-400">Generated by AeroPulse AI Health Science Engine</span>
               <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={handleCopyMarkdownPlan}
+                  className="px-3.5 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-1.5 transition-colors cursor-pointer"
+                  title="Copy formatted markdown plan"
+                >
+                  <Copy className="w-3.5 h-3.5" />
+                  <span>Copy Plan</span>
+                </button>
                 <button
                   type="button"
                   onClick={() => window.print()}

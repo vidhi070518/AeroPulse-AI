@@ -30,6 +30,7 @@ interface HeaderProps {
   onExportReport: () => void;
   darkMode: boolean;
   onToggleDarkMode: () => void;
+  onOpenCustomLocationModal: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -43,7 +44,8 @@ export const Header: React.FC<HeaderProps> = ({
   airShieldScore,
   onExportReport,
   darkMode,
-  onToggleDarkMode
+  onToggleDarkMode,
+  onOpenCustomLocationModal
 }) => {
   const getSeverityBadge = () => {
     switch (currentLocation.severity) {
@@ -146,23 +148,45 @@ export const Header: React.FC<HeaderProps> = ({
           <div className="flex flex-wrap items-center gap-2.5">
             
             {/* Location Selector */}
-            <div className="flex items-center gap-2 bg-slate-100/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 rounded-xl px-3 py-1.5 text-xs">
-              <MapPin className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+            <div className="flex items-center gap-1.5 bg-slate-100/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 rounded-xl px-2.5 py-1.5 text-xs">
+              <MapPin className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
               <select
                 aria-label="Select City and Air Basin"
                 value={currentLocation.id}
                 onChange={(e) => {
+                  if (e.target.value === '__custom__') {
+                    onOpenCustomLocationModal();
+                    return;
+                  }
                   const found = LOCATION_PRESETS.find(l => l.id === e.target.value);
                   if (found) onSelectLocation(found);
                 }}
-                className="bg-transparent text-slate-800 dark:text-slate-200 font-medium focus:outline-none cursor-pointer pr-1"
+                className="bg-transparent text-slate-800 dark:text-slate-200 font-medium focus:outline-none cursor-pointer pr-1 max-w-[150px] sm:max-w-[210px] truncate"
               >
+                {/* If current location is custom (not in presets), list it first */}
+                {!LOCATION_PRESETS.some(l => l.id === currentLocation.id) && (
+                  <option value={currentLocation.id} className="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 font-bold">
+                    Custom: {currentLocation.name} (AQI {currentLocation.aqi})
+                  </option>
+                )}
                 {LOCATION_PRESETS.map((loc) => (
                   <option key={loc.id} value={loc.id} className="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100">
                     {loc.name} — AQI {loc.aqi} ({loc.country})
                   </option>
                 ))}
+                <option value="__custom__" className="bg-emerald-50 dark:bg-emerald-950 font-bold text-emerald-700 dark:text-emerald-300">
+                  + Custom City / Air Sim...
+                </option>
               </select>
+
+              <button
+                type="button"
+                onClick={onOpenCustomLocationModal}
+                className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-100 dark:bg-emerald-950/70 text-emerald-800 dark:text-emerald-300 hover:bg-emerald-200 dark:hover:bg-emerald-900 transition-colors cursor-pointer"
+                title="Open Custom City & Atmospheric Simulator"
+              >
+                + Sim
+              </button>
             </div>
 
             {/* Inversion Cap Badge */}

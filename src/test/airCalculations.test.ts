@@ -3,7 +3,8 @@ import {
   calculateCigarettesEquivalent, 
   simulateHomeTwinRoomLevels, 
   calculateDirectImpact,
-  generateAdaptiveDailyRoutine 
+  generateAdaptiveDailyRoutine,
+  createCustomLocation 
 } from '../utils/airCalculations';
 import { LOCATION_PRESETS, DEFAULT_HOUSEHOLD } from '../data/mockData';
 import { HomeTwinState } from '../types';
@@ -113,6 +114,15 @@ describe('Air Quality Physics & Calculations Engine', () => {
     const midday = routines.find(r => r.phase === 'Midday Sun');
     expect(midday).toBeDefined();
     expect(midday?.severity).toBe('moderate');
+  });
+
+  it('creates custom atmospheric location with physical ratios and diurnal curve', () => {
+    const custom = createCustomLocation('Chicago', 'USA', 'Loop District', 125, 12, 160);
+    expect(custom.name).toBe('Chicago');
+    expect(custom.pm25).toBe(125);
+    expect(custom.pm10).toBeGreaterThan(125);
+    expect(custom.diurnalCurve.length).toBe(8);
+    expect(custom.severity).toBe('unhealthy');
   });
 });
 

@@ -249,3 +249,108 @@ export function generateAdaptiveDailyRoutine(
   ];
 }
 
+/**
+ * Creates a physically coherent LocationCity from custom user inputs
+ * with realistic atmospheric ratios and 24-hour diurnal inversion modeling.
+ */
+export function createCustomLocation(
+  name: string,
+  country: string,
+  neighborhood: string,
+  basePm25: number,
+  temperatureC: number = 16,
+  inversionCeilingMeters: number = 180
+): LocationCity {
+  // Approximate AQI from PM2.5 using US EPA / CPCB breakpoint formula
+  let aqi: number;
+  if (basePm25 <= 12) aqi = Math.round((50 / 12) * basePm25);
+  else if (basePm25 <= 35.4) aqi = Math.round(50 + ((100 - 50) / (35.4 - 12)) * (basePm25 - 12));
+  else if (basePm25 <= 55.4) aqi = Math.round(101 + ((150 - 101) / (55.4 - 35.4)) * (basePm25 - 35.4));
+  else if (basePm25 <= 150.4) aqi = Math.round(151 + ((200 - 151) / (150.4 - 55.4)) * (basePm25 - 55.4));
+  else if (basePm25 <= 250.4) aqi = Math.round(201 + ((300 - 201) / (250.4 - 150.4)) * (basePm25 - 150.4));
+  else aqi = Math.min(500, Math.round(301 + ((500 - 301) / (500 - 250.4)) * (basePm25 - 250.4)));
+
+  let severity: LocationCity['severity'] = 'moderate';
+  if (aqi <= 50) severity = 'good';
+  else if (aqi <= 100) severity = 'moderate';
+  else if (aqi <= 150) severity = 'unhealthy-sensitive';
+  else if (aqi <= 200) severity = 'unhealthy';
+  else if (aqi <= 300) severity = 'very-unhealthy';
+  else severity = 'hazardous';
+
+  // Typical combustion ratios
+  const pm10 = Math.round(basePm25 * 1.55);
+  const no2 = Math.min(180, Math.round(basePm25 * 0.32 + 15));
+  const co = Number((basePm25 * 0.009 + 0.8).toFixed(1));
+  const so2 = Math.round(basePm25 * 0.12 + 6);
+  const o3 = Math.max(15, Math.round(75 - (basePm25 * 0.1)));
+
+  // Generate 24-hr diurnal curve with inversion peak in morning and solar break at midday
+  const diurnalHourDefs = [
+    { hour: 0, timeLabel: '12 AM', invMult: 1.0, pmMult: 1.1 },
+    { hour: 3, timeLabel: '03 AM', invMult: 0.8, pmMult: 1.25 },
+    { hour: 6, timeLabel: '06 AM', invMult: 0.65, pmMult: 1.45 }, // Peak inversion
+    { hour: 9, timeLabel: '09 AM', invMult: 0.85, pmMult: 1.3 },
+    { hour: 12, timeLabel: '12 PM', invMult: 1.8, pmMult: 0.75 }, // Solar ventilation
+    { hour: 15, timeLabel: '03 PM', invMult: 2.1, pmMult: 0.65 }, // Best air
+    { hour: 18, timeLabel: '06 PM', invMult: 1.2, pmMult: 1.05 },
+    { hour: 21, timeLabel: '09 PM', invMult: 0.9, pmMult: 1.2 }
+  ];
+
+  const diurnalCurve = diurnalHourDefs.map(def => {
+    const hourPm25 = Math.round(basePm25 * def.pmMult);
+    const hourPm10 = Math.round(hourPm25 * 1.5);
+    const hourAqi = Math.round(aqi * def.pmMult);
+    const invH = Math.round(inversionCeilingMeters * def.invMult);
+
+    let safety: 'safe' | 'moderate' | 'unhealthy-sensitive' | 'unhealthy' | 'very-unhealthy' | 'hazardous' = 'moderate';
+    if (hourAqi <= 50) safety = 'safe';
+    else if (hourAqi <= 100) safety = 'moderate';
+    else if (hourAqi <= 150) safety = 'unhealthy-sensitive';
+    else if (hourAqi <= 200) safety = 'unhealthy';
+    else if (hourAqi <= 300) safety = 'very-unhealthy';
+    else safety = 'hazardous';
+
+    let rec = 'Standard indoor air management';
+    if (def.hour >= 12 && def.hour <= 15) {
+      rec = 'Solar safe window: Safe for 15-min air cross-flush';
+    } else if (def.hour >= 6 && def.hour <= 9) {
+      rec = 'Ground inversion trap: Keep all exterior doors sealed';
+    }
+
+    return {
+      hour: def.hour,
+      timeLabel: def.timeLabel,
+      aqi: hourAqi,
+      pm25: hourPm25,
+      pm10: hourPm10,
+      inversionHeight: invH,
+      safetyLevel: safety,
+      recommendation: rec
+    };
+  });
+
+  return {
+    id: `custom-${name.toLowerCase().replace(/[^a-z0-9]/g, '-')}-${Date.now()}`,
+    name,
+    country,
+    neighborhood,
+    aqi,
+    severity,
+    pm25: basePm25,
+    pm10,
+    no2,
+    co,
+    so2,
+    o3,
+    temperatureC,
+    humidityPercent: 62,
+    windSpeedKmh: 6.5,
+    inversionCeilingMeters,
+    primaryPollutant: 'PM2.5 (Fine Combustion Particulates)',
+    weatherSummary: `Custom atmospheric profile for ${name}. Inversion boundary layer capped at ${inversionCeilingMeters}m.`,
+    historicalComparison: `Custom configured monitoring station. Diurnal inversion active.`,
+    diurnalCurve
+  };
+}
+

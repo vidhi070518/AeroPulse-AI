@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { HouseholdProfile } from '../types';
 import { 
   X, 
@@ -28,6 +28,16 @@ export const HouseholdModal: React.FC<HouseholdModalProps> = ({
   onSave
 }) => {
   const [profile, setProfile] = useState<HouseholdProfile>(household);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 

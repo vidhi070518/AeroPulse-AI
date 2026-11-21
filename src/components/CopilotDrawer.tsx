@@ -56,6 +56,17 @@ export const CopilotDrawer: React.FC<CopilotDrawerProps> = ({
   const [isListening, setIsListening] = useState(false);
   const chatEndRef = useRef<HTMLDivElement>(null);
 
+  // Close on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   useEffect(() => {
     if (initialPrompt && isOpen) {
       handleSend(initialPrompt);
@@ -82,11 +93,18 @@ export const CopilotDrawer: React.FC<CopilotDrawerProps> = ({
     setIsLoading(true);
 
     try {
+      // Build conversation history to send
+      const historyPayload = messages.slice(-6).map(m => ({
+        sender: m.sender,
+        content: m.content
+      }));
+
       const res = await fetch('/api/copilot', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           message: textToSend,
+          history: historyPayload,
           location: {
             name: location.name,
             neighborhood: location.neighborhood,
@@ -207,15 +225,17 @@ export const CopilotDrawer: React.FC<CopilotDrawerProps> = ({
 
           <div className="flex items-center gap-1">
             <button
+              type="button"
               onClick={() => setMessages([messages[0]])}
-              className="p-1.5 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+              className="p-1.5 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
               title="Reset conversation"
             >
               <RotateCcw className="w-4 h-4" />
             </button>
             <button
+              type="button"
               onClick={onClose}
-              className="p-1.5 text-slate-400 hover:text-slate-700 dark:hover:text-white rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+              className="p-1.5 text-slate-400 hover:text-slate-700 dark:hover:text-white rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
@@ -248,8 +268,9 @@ export const CopilotDrawer: React.FC<CopilotDrawerProps> = ({
                   <div className="mt-3 pt-2 border-t border-slate-200/80 dark:border-slate-800 flex items-center justify-between text-[10px] text-slate-400 dark:text-slate-500">
                     <span>{msg.timestamp}</span>
                     <button
+                      type="button"
                       onClick={() => handleCopy(msg.id, msg.content)}
-                      className="text-slate-500 hover:text-emerald-700 dark:hover:text-emerald-400 flex items-center gap-1 transition-colors"
+                      className="text-slate-500 hover:text-emerald-700 dark:hover:text-emerald-400 flex items-center gap-1 transition-colors cursor-pointer"
                     >
                       {copiedId === msg.id ? (
                         <>
@@ -274,9 +295,10 @@ export const CopilotDrawer: React.FC<CopilotDrawerProps> = ({
                     <div className="flex flex-col gap-1">
                       {msg.suggestions.map((sug, idx) => (
                         <button
+                          type="button"
                           key={idx}
                           onClick={() => handleSend(sug)}
-                          className="text-left text-[11px] text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-slate-800 p-2 rounded-xl border border-slate-200/60 dark:border-slate-800 transition-colors"
+                          className="text-left text-[11px] text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-slate-800 p-2 rounded-xl border border-slate-200/60 dark:border-slate-800 transition-colors cursor-pointer"
                         >
                           → {sug}
                         </button>
@@ -331,7 +353,7 @@ export const CopilotDrawer: React.FC<CopilotDrawerProps> = ({
             <button
               type="button"
               onClick={toggleSpeechRecognition}
-              className={`p-2.5 rounded-xl border transition-all ${
+              className={`p-2.5 rounded-xl border transition-all cursor-pointer ${
                 isListening
                   ? 'bg-rose-600 text-white border-rose-600 animate-pulse'
                   : 'bg-white dark:bg-slate-950 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:text-slate-900 dark:hover:text-white'
@@ -345,7 +367,7 @@ export const CopilotDrawer: React.FC<CopilotDrawerProps> = ({
             <button
               type="submit"
               disabled={!input.trim() || isLoading}
-              className="p-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-200 dark:disabled:bg-slate-800 text-white disabled:text-slate-400 transition-all shadow-xs"
+              className="p-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-200 dark:disabled:bg-slate-800 text-white disabled:text-slate-400 transition-all shadow-xs cursor-pointer"
             >
               <Send className="w-4 h-4" />
             </button>
