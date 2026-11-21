@@ -424,3 +424,4 @@ export const COMMUNITY_INITIATIVES: CommunityInitiative[] = [
     userPledged: false
   }
 ];
+

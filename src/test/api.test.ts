@@ -87,3 +87,4 @@ describe('AeroPulse Copilot API Endpoint', () => {
     expect(json.data.reply).toContain('Customized Smog Strategy');
   });
 });
+

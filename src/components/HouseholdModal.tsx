@@ -7,10 +7,8 @@ import {
   Users, 
   Home, 
   Flame, 
-  Car, 
   ShieldCheck, 
   Save, 
-  CheckCircle2, 
   Baby, 
   Heart,
   Dog
@@ -44,21 +42,21 @@ export const HouseholdModal: React.FC<HouseholdModalProps> = ({
       {/* Backdrop */}
       <div 
         onClick={onClose}
-        className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm transition-opacity" 
+        className="fixed inset-0 bg-slate-900/40 dark:bg-slate-950/70 backdrop-blur-xs transition-opacity" 
       />
 
       {/* Modal Dialog */}
-      <div className="relative w-full max-w-2xl bg-slate-950 border border-slate-800 rounded-3xl shadow-2xl overflow-hidden z-10 max-h-[90vh] flex flex-col">
+      <div className="relative w-full max-w-2xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-2xl overflow-hidden z-10 max-h-[90vh] flex flex-col">
         
         {/* Modal Header */}
-        <div className="p-5 border-b border-slate-800/80 bg-slate-900/60 flex items-center justify-between">
+        <div className="p-5 border-b border-slate-100 dark:border-slate-800 bg-slate-50/80 dark:bg-slate-900/60 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-xl bg-teal-500/10 text-teal-400 border border-teal-500/20">
+            <div className="p-2 rounded-xl bg-teal-50 dark:bg-teal-950/50 text-teal-700 dark:text-teal-400 border border-teal-200 dark:border-teal-800">
               <Users className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-base font-bold text-white">Household & Lifestyle Profile</h3>
-              <p className="text-xs text-slate-400">
+              <h3 className="text-base font-bold text-slate-900 dark:text-white">Household &amp; Lifestyle Profile</h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 Tailor low-emission routines and indoor hacks to your family and architecture.
               </p>
             </div>
@@ -66,7 +64,7 @@ export const HouseholdModal: React.FC<HouseholdModalProps> = ({
 
           <button
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition-colors"
+            className="p-1.5 text-slate-400 hover:text-slate-700 dark:hover:text-white rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -77,25 +75,25 @@ export const HouseholdModal: React.FC<HouseholdModalProps> = ({
           
           {/* Profile Name */}
           <div>
-            <label className="text-slate-300 font-bold block mb-1.5">Household Label</label>
+            <label className="text-slate-700 dark:text-slate-300 font-bold block mb-1.5">Household Label</label>
             <input
               type="text"
               value={profile.name}
               onChange={(e) => setProfile({ ...profile, name: e.target.value })}
-              className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2 text-slate-200 focus:outline-none focus:border-emerald-500 text-xs"
+              className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-3.5 py-2 text-slate-900 dark:text-slate-100 focus:outline-none focus:border-emerald-500 text-xs"
             />
           </div>
 
           {/* Family Composition */}
-          <div className="p-4 bg-slate-900/40 border border-slate-800 rounded-2xl">
-            <h4 className="font-bold text-slate-200 mb-3 flex items-center gap-2">
-              <Baby className="w-4 h-4 text-emerald-400" />
-              Family Composition & Vulnerabilities
+          <div className="p-4 bg-slate-50 dark:bg-slate-900/40 border border-slate-200/80 dark:border-slate-800 rounded-2xl">
+            <h4 className="font-bold text-slate-800 dark:text-slate-200 mb-3 flex items-center gap-2">
+              <Baby className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+              Family Composition &amp; Vulnerabilities
             </h4>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
               <div>
-                <label className="text-slate-400 block mb-1">Adults (18-64)</label>
+                <label className="text-slate-600 dark:text-slate-400 block mb-1">Adults (18-64)</label>
                 <input
                   type="number"
                   min="1"
@@ -105,12 +103,12 @@ export const HouseholdModal: React.FC<HouseholdModalProps> = ({
                     ...profile,
                     members: { ...profile.members, adults: Number(e.target.value) || 1 }
                   })}
-                  className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-1.5 text-white"
+                  className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-1.5 text-slate-900 dark:text-white"
                 />
               </div>
 
               <div>
-                <label className="text-rose-300 block mb-1 font-semibold">Infants / Toddlers (&lt;3y)</label>
+                <label className="text-rose-700 dark:text-rose-400 block mb-1 font-semibold">Infants / Toddlers (&lt;3y)</label>
                 <input
                   type="number"
                   min="0"
@@ -120,12 +118,12 @@ export const HouseholdModal: React.FC<HouseholdModalProps> = ({
                     ...profile,
                     members: { ...profile.members, infants: Number(e.target.value) || 0 }
                   })}
-                  className="w-full bg-slate-900 border border-rose-900/40 rounded-xl px-3 py-1.5 text-white"
+                  className="w-full bg-white dark:bg-slate-900 border border-rose-200 dark:border-rose-900/60 rounded-xl px-3 py-1.5 text-slate-900 dark:text-white"
                 />
               </div>
 
               <div>
-                <label className="text-slate-400 block mb-1">Children (3-12y)</label>
+                <label className="text-slate-600 dark:text-slate-400 block mb-1">Children (3-12y)</label>
                 <input
                   type="number"
                   min="0"
@@ -135,12 +133,12 @@ export const HouseholdModal: React.FC<HouseholdModalProps> = ({
                     ...profile,
                     members: { ...profile.members, children: Number(e.target.value) || 0 }
                   })}
-                  className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-1.5 text-white"
+                  className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-1.5 text-slate-900 dark:text-white"
                 />
               </div>
 
               <div>
-                <label className="text-amber-300 block mb-1 font-semibold">Seniors (65+)</label>
+                <label className="text-amber-700 dark:text-amber-400 block mb-1 font-semibold">Seniors (65+)</label>
                 <input
                   type="number"
                   min="0"
@@ -150,13 +148,13 @@ export const HouseholdModal: React.FC<HouseholdModalProps> = ({
                     ...profile,
                     members: { ...profile.members, seniors: Number(e.target.value) || 0 }
                   })}
-                  className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-1.5 text-white"
+                  className="w-full bg-white dark:bg-slate-900 border border-amber-200 dark:border-amber-900/60 rounded-xl px-3 py-1.5 text-slate-900 dark:text-white"
                 />
               </div>
 
               <div>
-                <label className="text-rose-400 block mb-1 font-semibold flex items-center gap-1">
-                  <Heart className="w-3 h-3" />
+                <label className="text-rose-700 dark:text-rose-400 block mb-1 font-semibold flex items-center gap-1">
+                  <Heart className="w-3 h-3 text-rose-500" />
                   Asthmatics / Sensitive
                 </label>
                 <input
@@ -168,13 +166,13 @@ export const HouseholdModal: React.FC<HouseholdModalProps> = ({
                     ...profile,
                     members: { ...profile.members, asthmaticsOrSensitive: Number(e.target.value) || 0 }
                   })}
-                  className="w-full bg-slate-900 border border-rose-900/60 rounded-xl px-3 py-1.5 text-rose-300 font-bold"
+                  className="w-full bg-white dark:bg-slate-900 border border-rose-300 dark:border-rose-800 rounded-xl px-3 py-1.5 text-rose-700 dark:text-rose-300 font-bold"
                 />
               </div>
 
               <div>
-                <label className="text-slate-400 block mb-1 flex items-center gap-1">
-                  <Dog className="w-3 h-3" />
+                <label className="text-slate-600 dark:text-slate-400 block mb-1 flex items-center gap-1">
+                  <Dog className="w-3 h-3 text-slate-400" />
                   Pets
                 </label>
                 <input
@@ -186,27 +184,27 @@ export const HouseholdModal: React.FC<HouseholdModalProps> = ({
                     ...profile,
                     members: { ...profile.members, pets: Number(e.target.value) || 0 }
                   })}
-                  className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-1.5 text-white"
+                  className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-1.5 text-slate-900 dark:text-white"
                 />
               </div>
             </div>
           </div>
 
           {/* Home Architecture & Envelope */}
-          <div className="p-4 bg-slate-900/40 border border-slate-800 rounded-2xl">
-            <h4 className="font-bold text-slate-200 mb-3 flex items-center gap-2">
-              <Home className="w-4 h-4 text-sky-400" />
-              Home Architecture & Envelope Tightness
+          <div className="p-4 bg-slate-50 dark:bg-slate-900/40 border border-slate-200/80 dark:border-slate-800 rounded-2xl">
+            <h4 className="font-bold text-slate-800 dark:text-slate-200 mb-3 flex items-center gap-2">
+              <Home className="w-4 h-4 text-sky-600 dark:text-sky-400" />
+              Home Architecture &amp; Envelope Tightness
             </h4>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label className="text-slate-400 block mb-1">Building Type</label>
+                <label className="text-slate-600 dark:text-slate-400 block mb-1">Building Type</label>
                 <select
                   aria-label="Building Type"
                   value={profile.homeType}
                   onChange={(e) => setProfile({ ...profile, homeType: e.target.value as any })}
-                  className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-white"
+                  className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-slate-900 dark:text-white"
                 >
                   <option value="high-rise-apartment">High-Rise Apartment (Floor 5+)</option>
                   <option value="low-rise-apartment">Low-Rise Apartment (Floor 1-4)</option>
@@ -216,14 +214,14 @@ export const HouseholdModal: React.FC<HouseholdModalProps> = ({
               </div>
 
               <div>
-                <label className="text-slate-400 block mb-1">Envelope Sealing Quality</label>
+                <label className="text-slate-600 dark:text-slate-400 block mb-1">Envelope Sealing Quality</label>
                 <select
                   aria-label="Envelope Sealing Quality"
                   value={profile.sealingQuality}
                   onChange={(e) => setProfile({ ...profile, sealingQuality: e.target.value as any })}
-                  className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-white"
+                  className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-slate-900 dark:text-white"
                 >
-                  <option value="drafty-leaky">Drafty & Leaky (High Infiltration ~68%)</option>
+                  <option value="drafty-leaky">Drafty &amp; Leaky (High Infiltration ~68%)</option>
                   <option value="standard">Standard Double Glass (~42%)</option>
                   <option value="weather-stripped">Weather-Stripped (~22%)</option>
                   <option value="hermetic-triple-glazed">Hermetic Triple-Glazed (~8%)</option>
@@ -233,55 +231,55 @@ export const HouseholdModal: React.FC<HouseholdModalProps> = ({
           </div>
 
           {/* Stove & Commute */}
-          <div className="p-4 bg-slate-900/40 border border-slate-800 rounded-2xl">
-            <h4 className="font-bold text-slate-200 mb-3 flex items-center gap-2">
-              <Flame className="w-4 h-4 text-amber-400" />
-              Daily Emissions & Mobility Setup
+          <div className="p-4 bg-slate-50 dark:bg-slate-900/40 border border-slate-200/80 dark:border-slate-800 rounded-2xl">
+            <h4 className="font-bold text-slate-800 dark:text-slate-200 mb-3 flex items-center gap-2">
+              <Flame className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+              Daily Emissions &amp; Mobility Setup
             </h4>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label className="text-slate-400 block mb-1">Kitchen Primary Stove</label>
+                <label className="text-slate-600 dark:text-slate-400 block mb-1">Kitchen Primary Stove</label>
                 <select
                   aria-label="Kitchen Primary Stove"
                   value={profile.cookingFuel}
                   onChange={(e) => setProfile({ ...profile, cookingFuel: e.target.value as any })}
-                  className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-white"
+                  className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-slate-900 dark:text-white"
                 >
                   <option value="lpg-cylinder">LPG Gas Cylinder (High NO2 Spike)</option>
                   <option value="piped-natural-gas">Piped Natural Gas (Methane Flame)</option>
                   <option value="electric-induction">Electric Induction (Zero Flame NO2)</option>
-                  <option value="biomass-wood">Biomass / Wood / Chulha (Extreme Soot)</option>
+                  <option value="biomass-wood">Biomass / Wood (Extreme Soot)</option>
                 </select>
               </div>
 
               <div>
-                <label className="text-slate-400 block mb-1">Daily Work/School Commute Mode</label>
+                <label className="text-slate-600 dark:text-slate-400 block mb-1">Daily Commute Mode</label>
                 <select
                   aria-label="Daily Commute Mode"
                   value={profile.commuteMode}
                   onChange={(e) => setProfile({ ...profile, commuteMode: e.target.value as any })}
-                  className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-white"
+                  className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-slate-900 dark:text-white"
                 >
                   <option value="public-metro-electric-bus">Public Metro Rail / Electric Bus (Protected)</option>
                   <option value="private-ice-car">Solo Petrol/Diesel Car</option>
                   <option value="electric-vehicle">Electric Vehicle (EV)</option>
-                  <option value="two-wheeler-bike">Motorbike / Scooter (Direct Highway Inhalation)</option>
+                  <option value="two-wheeler-bike">Motorbike / Scooter (Direct Inhalation)</option>
                   <option value="walking-cycling">Walking / Cycling</option>
                 </select>
               </div>
             </div>
           </div>
 
-          {/* Defenses & Hardware */}
-          <div className="p-4 bg-slate-900/40 border border-slate-800 rounded-2xl">
-            <h4 className="font-bold text-slate-200 mb-3 flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-emerald-400" />
+          {/* Active Hardware Defenses */}
+          <div className="p-4 bg-slate-50 dark:bg-slate-900/40 border border-slate-200/80 dark:border-slate-800 rounded-2xl">
+            <h4 className="font-bold text-slate-800 dark:text-slate-200 mb-3 flex items-center gap-2">
+              <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
               Active Hardware Defenses
             </h4>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
+              <label className="flex items-center gap-2 text-slate-700 dark:text-slate-300 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={profile.defenses.hasCorsiRosenthalBox}
@@ -289,12 +287,12 @@ export const HouseholdModal: React.FC<HouseholdModalProps> = ({
                     ...profile,
                     defenses: { ...profile.defenses, hasCorsiRosenthalBox: e.target.checked }
                   })}
-                  className="rounded bg-slate-800 border-slate-700 text-emerald-600 focus:ring-0"
+                  className="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
                 />
                 <span>Equipped with Corsi-Rosenthal DIY Box</span>
               </label>
 
-              <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
+              <label className="flex items-center gap-2 text-slate-700 dark:text-slate-300 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={profile.defenses.n95MasksAvailable}
@@ -302,12 +300,12 @@ export const HouseholdModal: React.FC<HouseholdModalProps> = ({
                     ...profile,
                     defenses: { ...profile.defenses, n95MasksAvailable: e.target.checked }
                   })}
-                  className="rounded bg-slate-800 border-slate-700 text-emerald-600 focus:ring-0"
+                  className="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
                 />
                 <span>N95/FFP2 Respirators in Hand</span>
               </label>
 
-              <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
+              <label className="flex items-center gap-2 text-slate-700 dark:text-slate-300 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={profile.defenses.hasContinuousAQIMonitor}
@@ -315,12 +313,12 @@ export const HouseholdModal: React.FC<HouseholdModalProps> = ({
                     ...profile,
                     defenses: { ...profile.defenses, hasContinuousAQIMonitor: e.target.checked }
                   })}
-                  className="rounded bg-slate-800 border-slate-700 text-emerald-600 focus:ring-0"
+                  className="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
                 />
                 <span>Indoor Laser PM2.5 Monitor</span>
               </label>
 
-              <label className="flex items-center gap-2 text-slate-300 cursor-pointer">
+              <label className="flex items-center gap-2 text-slate-700 dark:text-slate-300 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={profile.hasKitchenChimneyExhaust}
@@ -328,7 +326,7 @@ export const HouseholdModal: React.FC<HouseholdModalProps> = ({
                     ...profile,
                     hasKitchenChimneyExhaust: e.target.checked
                   })}
-                  className="rounded bg-slate-800 border-slate-700 text-emerald-600 focus:ring-0"
+                  className="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
                 />
                 <span>Kitchen Chimney / Exhaust Fan</span>
               </label>
@@ -340,16 +338,16 @@ export const HouseholdModal: React.FC<HouseholdModalProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-xs font-semibold text-slate-400 hover:text-white"
+              className="px-4 py-2 text-xs font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-4 py-2 rounded-xl text-xs flex items-center gap-1.5 transition-all shadow-md shadow-emerald-950"
+              className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-4 py-2 rounded-xl text-xs flex items-center gap-1.5 transition-all shadow-xs"
             >
               <Save className="w-3.5 h-3.5" />
-              <span>Apply & Recalculate Defense</span>
+              <span>Apply &amp; Recalculate</span>
             </button>
           </div>
 

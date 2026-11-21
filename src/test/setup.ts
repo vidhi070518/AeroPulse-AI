@@ -19,3 +19,4 @@ Object.defineProperty(window, 'matchMedia', {
 // Mock URL.createObjectURL and revokeObjectURL
 window.URL.createObjectURL = vi.fn(() => 'blob:mock-url');
 window.URL.revokeObjectURL = vi.fn();
+

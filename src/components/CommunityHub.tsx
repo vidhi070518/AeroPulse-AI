@@ -8,11 +8,9 @@ import {
   MapPin, 
   ShieldCheck, 
   Megaphone, 
-  Sparkles, 
   Check, 
   Camera, 
-  Send,
-  Award
+  Send
 } from 'lucide-react';
 
 interface CommunityHubProps {
@@ -57,35 +55,35 @@ export const CommunityHub: React.FC<CommunityHubProps> = ({ onAwardCredits }) =>
   const totalPledgers = initiatives.reduce((sum, item) => sum + item.activePledgers, 0);
 
   return (
-    <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-5 lg:p-6 backdrop-blur-md shadow-xl">
+    <div className="bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 rounded-3xl p-5 lg:p-7 shadow-xs">
       
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-slate-800/80">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-100 dark:border-slate-800/80">
         <div>
           <div className="flex items-center gap-2">
-            <Users className="w-5 h-5 text-emerald-400" />
-            <h2 className="text-lg lg:text-xl font-bold text-white tracking-tight">
-              Community Smog Shield & Collective Action
+            <Users className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
+            <h2 className="text-lg lg:text-xl font-bold text-slate-900 dark:text-white tracking-tight">
+              Community Smog Shield &amp; Collective Action
             </h2>
           </div>
-          <p className="text-xs text-slate-400 mt-1">
-            Mobilizing neighborhoods, schools, and apartment societies for collective particulate reduction.
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+            Mobilizing neighborhoods, schools, and societies for collective particulate reduction.
           </p>
         </div>
 
         {/* Collective Counter Banner */}
-        <div className="flex items-center gap-3 bg-slate-950/80 border border-emerald-900/40 px-3.5 py-2 rounded-xl">
+        <div className="flex items-center gap-4 bg-slate-50 dark:bg-slate-950/60 border border-slate-200/80 dark:border-slate-800 px-4 py-2.5 rounded-2xl">
           <div>
-            <span className="text-[10px] text-slate-400 uppercase tracking-wider block">Neighborhood Shield</span>
+            <span className="text-[10px] text-slate-400 dark:text-slate-500 uppercase tracking-wider font-semibold block">Neighborhood Shield</span>
             <div className="flex items-baseline gap-1.5">
-              <span className="text-xl font-black text-emerald-400">{totalSmogAbated.toLocaleString()}</span>
-              <span className="text-xs text-slate-400">kg Particulate Abated</span>
+              <span className="text-xl font-black text-emerald-700 dark:text-emerald-400">{totalSmogAbated.toLocaleString()}</span>
+              <span className="text-xs text-slate-500">kg Particulate Averted</span>
             </div>
           </div>
-          <div className="h-8 w-px bg-slate-800" />
+          <div className="h-8 w-px bg-slate-200 dark:bg-slate-800" />
           <div>
-            <span className="text-[10px] text-slate-400 uppercase tracking-wider block">Active Families</span>
-            <span className="text-sm font-bold text-white">{totalPledgers.toLocaleString()}</span>
+            <span className="text-[10px] text-slate-400 dark:text-slate-500 uppercase tracking-wider font-semibold block">Active Families</span>
+            <span className="text-sm font-bold text-slate-900 dark:text-white">{totalPledgers.toLocaleString()}</span>
           </div>
         </div>
       </div>
@@ -95,40 +93,40 @@ export const CommunityHub: React.FC<CommunityHubProps> = ({ onAwardCredits }) =>
         {initiatives.map((item) => (
           <div
             key={item.id}
-            className={`p-4.5 rounded-2xl border transition-all flex flex-col justify-between ${
+            className={`p-5 rounded-2xl border transition-all flex flex-col justify-between ${
               item.userPledged
-                ? 'bg-emerald-950/20 border-emerald-600/40 shadow-sm'
-                : 'bg-slate-950/80 border-slate-800 hover:border-slate-700'
+                ? 'bg-emerald-50/50 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-800/50 shadow-2xs'
+                : 'bg-slate-50 dark:bg-slate-950/60 border-slate-200/90 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
             }`}
           >
             <div>
               <div className="flex items-start justify-between gap-2">
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-slate-800 text-slate-300">
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800">
                   {item.category}
                 </span>
-                <span className="text-xs font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-0.5 rounded-full">
+                <span className="text-xs font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-100/60 dark:bg-emerald-950/60 px-2.5 py-0.5 rounded-full">
                   {item.collectiveSmogAbatedKg} kg Abated
                 </span>
               </div>
 
-              <h3 className="text-base font-bold text-white mt-2.5">
+              <h3 className="text-base font-bold text-slate-900 dark:text-white mt-2.5">
                 {item.title}
               </h3>
               
-              <div className="flex items-center gap-1.5 text-xs text-slate-400 mt-1">
-                <MapPin className="w-3.5 h-3.5 text-slate-500" />
+              <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 mt-1">
+                <MapPin className="w-3.5 h-3.5 text-slate-400" />
                 <span>{item.targetNeighborhood}</span>
               </div>
 
-              <p className="text-xs text-slate-300 mt-2.5 leading-relaxed">
+              <p className="text-xs text-slate-600 dark:text-slate-300 mt-2.5 leading-relaxed">
                 {item.description}
               </p>
             </div>
 
             {/* Bottom: Pledgers & Toggle Button */}
-            <div className="mt-4 pt-3 border-t border-slate-800/60 flex items-center justify-between">
-              <div className="flex items-center gap-1.5 text-xs text-slate-400">
-                <Users className="w-3.5 h-3.5 text-slate-500" />
+            <div className="mt-4 pt-3.5 border-t border-slate-200/80 dark:border-slate-800 flex items-center justify-between">
+              <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
+                <Users className="w-3.5 h-3.5 text-slate-400" />
                 <span><strong>{item.activePledgers}</strong> families pledged</span>
               </div>
 
@@ -136,8 +134,8 @@ export const CommunityHub: React.FC<CommunityHubProps> = ({ onAwardCredits }) =>
                 onClick={() => togglePledge(item.id)}
                 className={`text-xs font-semibold px-3 py-1.5 rounded-xl flex items-center gap-1.5 transition-all ${
                   item.userPledged
-                    ? 'bg-emerald-600 text-white shadow-md shadow-emerald-950'
-                    : 'bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700'
+                    ? 'bg-emerald-600 text-white shadow-xs'
+                    : 'bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700'
                 }`}
               >
                 {item.userPledged ? (
@@ -147,7 +145,7 @@ export const CommunityHub: React.FC<CommunityHubProps> = ({ onAwardCredits }) =>
                   </>
                 ) : (
                   <>
-                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
                     <span>Take the Pledge</span>
                   </>
                 )}
@@ -158,32 +156,32 @@ export const CommunityHub: React.FC<CommunityHubProps> = ({ onAwardCredits }) =>
       </div>
 
       {/* Community Smog / Trash Burning Rapid Incident Reporter */}
-      <div className="mt-6 p-4.5 bg-slate-950/90 border border-slate-800 rounded-2xl">
-        <div className="flex items-center gap-2 text-rose-300 font-bold text-sm">
-          <Megaphone className="w-4 h-4 text-rose-400" />
-          <span>Spot & Report Localized Smog Hotspot (Trash Burning / Diesel Genset)</span>
+      <div className="mt-6 p-5 bg-slate-50 dark:bg-slate-950/60 border border-slate-200/80 dark:border-slate-800 rounded-2xl">
+        <div className="flex items-center gap-2 text-rose-700 dark:text-rose-400 font-bold text-sm">
+          <Megaphone className="w-4 h-4 text-rose-500" />
+          <span>Spot &amp; Report Localized Smog Hotspot (Trash Burning / Diesel Genset)</span>
         </div>
-        <p className="text-xs text-slate-400 mt-1">
+        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
           Crowdsource illegal leaf burning, open trash fires, or industrial chimney leaks with immediate geo-alerts.
         </p>
 
         {reportSubmitted ? (
-          <div className="mt-3 p-3 bg-emerald-950/40 border border-emerald-600/40 rounded-xl text-emerald-300 text-xs flex items-center gap-2">
-            <Check className="w-4 h-4 text-emerald-400" />
+          <div className="mt-3 p-3 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 rounded-xl text-emerald-800 dark:text-emerald-300 text-xs flex items-center gap-2">
+            <Check className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
             <span>Thank you! Hotspot reported to nodal municipal officers. +500 Prompt Credits awarded!</span>
           </div>
         ) : (
-          <form onSubmit={handleReportSubmit} className="mt-3 flex flex-col sm:flex-row gap-2">
+          <form onSubmit={handleReportSubmit} className="mt-3.5 flex flex-col sm:flex-row gap-2">
             <input
               type="text"
               value={reportText}
               onChange={(e) => setReportText(e.target.value)}
               placeholder="e.g., Open leaf burning spotted near Sector 14 park boundary wall..."
-              className="flex-1 bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+              className="flex-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-3.5 py-2 text-xs text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:border-emerald-500"
             />
             <button
               type="button"
-              className="bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 px-3 py-2 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors"
+              className="bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 px-3.5 py-2 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-colors"
               title="Attach photo"
             >
               <Camera className="w-3.5 h-3.5" />
@@ -191,7 +189,7 @@ export const CommunityHub: React.FC<CommunityHubProps> = ({ onAwardCredits }) =>
             </button>
             <button
               type="submit"
-              className="bg-rose-600 hover:bg-rose-500 text-white font-semibold px-4 py-2 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-all shadow-md shadow-rose-950"
+              className="bg-rose-600 hover:bg-rose-700 text-white font-semibold px-4 py-2 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-all shadow-xs"
             >
               <Send className="w-3.5 h-3.5" />
               <span>Broadcast Alert</span>

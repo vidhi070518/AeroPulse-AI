@@ -34,7 +34,7 @@ describe('UI Components Render Suite', () => {
       />
     );
 
-    expect(screen.getByText(/Direct Impact & Exposure Quantification/i)).toBeInTheDocument();
+    expect(screen.getByText(/Personal Exposure & Emissions Shield/i)).toBeInTheDocument();
     expect(screen.getByText(/Cigarettes \/ Person \/ Day/i)).toBeInTheDocument();
     expect(screen.getByText(/Lung Deposition Cut/i)).toBeInTheDocument();
   });
@@ -51,7 +51,8 @@ describe('UI Components Render Suite', () => {
 
     expect(screen.getByText(/Interactive Home Air Twin/i)).toBeInTheDocument();
     expect(screen.getByText(/Kitchen Zone/i)).toBeInTheDocument();
-    expect(screen.getByText(/Living Room Area/i)).toBeInTheDocument();
-    expect(screen.getByText(/Clean Sleep Haven/i)).toBeInTheDocument();
+    expect(screen.getByText(/Living Area/i)).toBeInTheDocument();
+    expect(screen.getByText(/Bedroom Haven/i)).toBeInTheDocument();
   });
 });
+

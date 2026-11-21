@@ -115,3 +115,4 @@ describe('Air Quality Physics & Calculations Engine', () => {
     expect(midday?.severity).toBe('moderate');
   });
 });
+

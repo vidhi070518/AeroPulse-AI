@@ -12,7 +12,6 @@ import {
   MicOff, 
   Copy, 
   Check, 
-  AlertTriangle,
   RotateCcw
 } from 'lucide-react';
 
@@ -41,7 +40,7 @@ export const CopilotDrawer: React.FC<CopilotDrawerProps> = ({
     {
       id: 'welcome',
       sender: 'assistant',
-      content: `Hello! I am **AeroPulse AI**, your GenAI Urban Air Quality and Smog Defense Copilot.\n\nI've analyzed your location (**${location.name}**, AQI **${location.aqi}**) and your household setup. What can I help you protect or optimize today?`,
+      content: `Hello! I am **AeroPulse AI**, your GenAI Urban Air Quality and Smog Defense Copilot.\n\nI have analyzed your location (**${location.name}**, AQI **${location.aqi}**) and your household profile. How can I help protect your family or optimize your low-emission routine today?`,
       timestamp: 'Just now',
       suggestions: [
         'How do I size a Corsi-Rosenthal box for my rooms?',
@@ -57,7 +56,6 @@ export const CopilotDrawer: React.FC<CopilotDrawerProps> = ({
   const [isListening, setIsListening] = useState(false);
   const chatEndRef = useRef<HTMLDivElement>(null);
 
-  // Auto-fill prompt if initialPrompt changes
   useEffect(() => {
     if (initialPrompt && isOpen) {
       handleSend(initialPrompt);
@@ -182,27 +180,27 @@ export const CopilotDrawer: React.FC<CopilotDrawerProps> = ({
       {/* Backdrop */}
       <div 
         onClick={onClose}
-        className="fixed inset-0 bg-slate-950/70 backdrop-blur-sm transition-opacity" 
+        className="fixed inset-0 bg-slate-900/40 dark:bg-slate-950/70 backdrop-blur-xs transition-opacity" 
       />
 
       {/* Drawer Panel */}
-      <div className="relative w-full max-w-lg bg-slate-950 border-l border-slate-800 h-full flex flex-col shadow-2xl z-10">
+      <div className="relative w-full max-w-lg bg-white dark:bg-slate-950 border-l border-slate-200 dark:border-slate-800 h-full flex flex-col shadow-2xl z-10">
         
         {/* Drawer Header */}
-        <div className="p-4 border-b border-slate-800/80 flex items-center justify-between bg-slate-900/80">
+        <div className="p-4 border-b border-slate-200/80 dark:border-slate-800 bg-slate-50/80 dark:bg-slate-900/80 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-md">
-              <Sparkles className="w-5 h-5" />
+            <div className="w-8 h-8 rounded-xl bg-emerald-600 dark:bg-emerald-500 text-white flex items-center justify-center shadow-xs">
+              <Sparkles className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="text-base font-bold text-white flex items-center gap-1.5">
+              <h3 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
                 AeroPulse AI Copilot
-                <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-                  GEMINI
+                <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+                  Gemini
                 </span>
               </h3>
-              <p className="text-[11px] text-slate-400">
-                Ground-Truth Atmospheric & Respiratory Assistant
+              <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                Atmospheric Science &amp; Health Copilot
               </p>
             </div>
           </div>
@@ -210,14 +208,14 @@ export const CopilotDrawer: React.FC<CopilotDrawerProps> = ({
           <div className="flex items-center gap-1">
             <button
               onClick={() => setMessages([messages[0]])}
-              className="p-2 text-slate-400 hover:text-slate-200 rounded-lg hover:bg-slate-800 transition-colors"
+              className="p-1.5 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
               title="Reset conversation"
             >
               <RotateCcw className="w-4 h-4" />
             </button>
             <button
               onClick={onClose}
-              className="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition-colors"
+              className="p-1.5 text-slate-400 hover:text-slate-700 dark:hover:text-white rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
             >
               <X className="w-5 h-5" />
             </button>
@@ -232,56 +230,53 @@ export const CopilotDrawer: React.FC<CopilotDrawerProps> = ({
               className={`flex gap-3 ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
             >
               {msg.sender === 'assistant' && (
-                <div className="w-7 h-7 rounded-lg bg-emerald-600/30 border border-emerald-500/40 text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
+                <div className="w-7 h-7 rounded-lg bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 flex items-center justify-center shrink-0 mt-0.5">
                   <Bot className="w-4 h-4" />
                 </div>
               )}
 
               <div className={`max-w-[85%] rounded-2xl p-4 text-xs leading-relaxed ${
                 msg.sender === 'user'
-                  ? 'bg-emerald-600 text-white rounded-br-none shadow-md'
-                  : 'bg-slate-900 border border-slate-800 text-slate-200 rounded-bl-none shadow-md'
+                  ? 'bg-emerald-600 text-white rounded-br-none shadow-xs'
+                  : 'bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 rounded-bl-none shadow-2xs'
               }`}>
-                {/* Content rendering with linebreaks and bold */}
-                <div className="whitespace-pre-line prose prose-invert prose-xs">
+                <div className="whitespace-pre-line prose prose-slate dark:prose-invert prose-xs">
                   {msg.content}
                 </div>
 
-                {/* Footer bar for assistant messages */}
                 {msg.sender === 'assistant' && (
-                  <div className="mt-3 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[10px] text-slate-500">
+                  <div className="mt-3 pt-2 border-t border-slate-200/80 dark:border-slate-800 flex items-center justify-between text-[10px] text-slate-400 dark:text-slate-500">
                     <span>{msg.timestamp}</span>
                     <button
                       onClick={() => handleCopy(msg.id, msg.content)}
-                      className="text-slate-400 hover:text-emerald-400 flex items-center gap-1 transition-colors"
+                      className="text-slate-500 hover:text-emerald-700 dark:hover:text-emerald-400 flex items-center gap-1 transition-colors"
                     >
                       {copiedId === msg.id ? (
                         <>
-                          <Check className="w-3 h-3 text-emerald-400" />
-                          <span className="text-emerald-400">Copied</span>
+                          <Check className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
+                          <span className="text-emerald-600 dark:text-emerald-400 font-medium">Copied</span>
                         </>
                       ) : (
                         <>
                           <Copy className="w-3 h-3" />
-                          <span>Copy Response</span>
+                          <span>Copy</span>
                         </>
                       )}
                     </button>
                   </div>
                 )}
 
-                {/* Quick suggestions */}
                 {msg.suggestions && msg.suggestions.length > 0 && (
-                  <div className="mt-3 pt-2.5 border-t border-slate-800/80 space-y-1.5">
-                    <span className="text-[10px] uppercase tracking-wider text-slate-400 font-bold block">
-                      Suggested Next Steps:
+                  <div className="mt-3 pt-2.5 border-t border-slate-200/80 dark:border-slate-800 space-y-1.5">
+                    <span className="text-[10px] uppercase tracking-wider text-slate-400 dark:text-slate-500 font-bold block">
+                      Suggested Next Questions:
                     </span>
                     <div className="flex flex-col gap-1">
                       {msg.suggestions.map((sug, idx) => (
                         <button
                           key={idx}
                           onClick={() => handleSend(sug)}
-                          className="text-left text-[11px] text-teal-300 hover:text-teal-200 bg-slate-950/60 hover:bg-slate-800/80 p-2 rounded-lg border border-slate-800 transition-colors"
+                          className="text-left text-[11px] text-emerald-700 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-slate-800 p-2 rounded-xl border border-slate-200/60 dark:border-slate-800 transition-colors"
                         >
                           → {sug}
                         </button>
@@ -292,7 +287,7 @@ export const CopilotDrawer: React.FC<CopilotDrawerProps> = ({
               </div>
 
               {msg.sender === 'user' && (
-                <div className="w-7 h-7 rounded-lg bg-slate-800 text-slate-300 flex items-center justify-center shrink-0 mt-0.5">
+                <div className="w-7 h-7 rounded-lg bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 flex items-center justify-center shrink-0 mt-0.5">
                   <User className="w-4 h-4" />
                 </div>
               )}
@@ -301,12 +296,12 @@ export const CopilotDrawer: React.FC<CopilotDrawerProps> = ({
 
           {isLoading && (
             <div className="flex gap-3 justify-start items-center">
-              <div className="w-7 h-7 rounded-lg bg-emerald-600/30 border border-emerald-500/40 text-emerald-400 flex items-center justify-center shrink-0">
+              <div className="w-7 h-7 rounded-lg bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 flex items-center justify-center shrink-0">
                 <Bot className="w-4 h-4 animate-spin" />
               </div>
-              <div className="bg-slate-900 border border-slate-800 rounded-2xl p-3.5 text-xs text-slate-400 flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-                <span>Simulating atmospheric dispersion and formulating advice...</span>
+              <div className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-3 text-xs text-slate-500 dark:text-slate-400 flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
+                <span>Synthesizing atmospheric dispersion and formulating advice...</span>
               </div>
             </div>
           )}
@@ -315,7 +310,7 @@ export const CopilotDrawer: React.FC<CopilotDrawerProps> = ({
         </div>
 
         {/* Input Bar */}
-        <div className="p-4 border-t border-slate-800/80 bg-slate-900/60">
+        <div className="p-4 border-t border-slate-200/80 dark:border-slate-800 bg-slate-50/80 dark:bg-slate-900/60">
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -327,19 +322,19 @@ export const CopilotDrawer: React.FC<CopilotDrawerProps> = ({
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Ask anything (e.g., nursery seal, Corsi-Rosenthal sizing)..."
+              placeholder="Ask anything (e.g. nursery seal, Corsi-Rosenthal sizing)..."
               disabled={isLoading}
-              className="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 disabled:opacity-50"
+              className="flex-1 bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-emerald-500 disabled:opacity-50"
             />
 
-            {/* Voice Dictation Button */}
+            {/* Voice Dictation */}
             <button
               type="button"
               onClick={toggleSpeechRecognition}
               className={`p-2.5 rounded-xl border transition-all ${
                 isListening
-                  ? 'bg-rose-600 text-white border-rose-500 animate-pulse'
-                  : 'bg-slate-950 text-slate-400 border-slate-800 hover:text-slate-200'
+                  ? 'bg-rose-600 text-white border-rose-600 animate-pulse'
+                  : 'bg-white dark:bg-slate-950 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:text-slate-900 dark:hover:text-white'
               }`}
               title="Speak with microphone"
             >
@@ -350,7 +345,7 @@ export const CopilotDrawer: React.FC<CopilotDrawerProps> = ({
             <button
               type="submit"
               disabled={!input.trim() || isLoading}
-              className="p-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 disabled:bg-slate-800 text-white disabled:text-slate-600 transition-all shadow-md shadow-emerald-950"
+              className="p-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-200 dark:disabled:bg-slate-800 text-white disabled:text-slate-400 transition-all shadow-xs"
             >
               <Send className="w-4 h-4" />
             </button>

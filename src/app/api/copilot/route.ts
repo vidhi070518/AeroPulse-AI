@@ -274,3 +274,4 @@ Severe winter smog is currently trapped under a **${location?.inversionCeilingMe
 **Direct Impact Today:**
 By following these protocols, your household exposure drops from an unprotected **${Math.round(pm25 * 0.85)} µg/m³** down to **~${roomPm25?.bedroom || 25} µg/m³**, preventing the lung damage equivalent of **${((pm25 * 0.7) / 22).toFixed(1)} cigarettes per person today**!`;
 }
+
