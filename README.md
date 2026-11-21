@@ -48,8 +48,8 @@
 ### Installation
 ```bash
 # Clone repository
-git clone https://github.com/vidhi070518/EventPilot-AI.git
-cd EventPilot-AI
+git clone https://github.com/vidhi070518/AeroPulse-AI.git
+cd AeroPulse-AI
 
 # Install dependencies
 npm install
