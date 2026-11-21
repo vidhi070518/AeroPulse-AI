@@ -85,70 +85,43 @@ export const Header: React.FC<HeaderProps> = ({
   const badge = getSeverityBadge();
 
   return (
-    <header className={`sticky top-0 z-40 backdrop-blur-md border-b transition-colors duration-200 ${
+    <header className={`sticky top-0 z-40 backdrop-blur-xl border-b transition-colors duration-200 ${
       emergencyMode
         ? 'bg-rose-50/95 dark:bg-rose-950/90 border-rose-200 dark:border-rose-900/60'
-        : 'bg-white/95 dark:bg-slate-900/90 border-slate-200 dark:border-slate-800 shadow-xs'
+        : 'bg-white/95 dark:bg-slate-950/90 border-slate-200/80 dark:border-slate-800 shadow-[0_1px_3px_0_rgba(0,0,0,0.02)]'
     }`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3.5">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5">
+        <div className="flex items-center justify-between gap-3">
           
-          {/* Logo & Category Badge */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className={`w-9 h-9 rounded-xl flex items-center justify-center transition-colors shadow-xs ${
-                emergencyMode 
-                  ? 'bg-rose-600 text-white' 
-                  : 'bg-emerald-600 text-white dark:bg-emerald-500'
-              }`}>
-                <Wind className="w-5 h-5" />
-              </div>
-              <div>
-                <div className="flex items-center gap-2">
-                  <h1 className="text-lg font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-1.5">
-                    AeroPulse <span className="text-[11px] px-1.5 py-0.5 rounded-md font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">AI</span>
-                  </h1>
-                  <span className={`inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-0.5 rounded-full border ${badge.bg}`}>
-                    <span className={`w-1.5 h-1.5 rounded-full ${badge.dot}`} />
-                    {badge.text}
-                  </span>
-                </div>
-                <p className="text-xs text-slate-500 dark:text-slate-400 hidden sm:block">
-                  Urban Air Quality &amp; Winter Smog Defense System
-                </p>
-              </div>
+          {/* Left: Brand Identity & Status */}
+          <div className="flex items-center gap-3 shrink-0">
+            <div className={`w-8 h-8 rounded-xl flex items-center justify-center transition-all shadow-xs ${
+              emergencyMode 
+                ? 'bg-rose-600 text-white' 
+                : 'bg-gradient-to-tr from-emerald-600 to-teal-500 text-white shadow-emerald-500/10'
+            }`}>
+              <Wind className="w-4 h-4" />
             </div>
+            
+            <div className="flex items-center gap-2">
+              <span className="text-base font-black tracking-tight text-slate-900 dark:text-white flex items-center gap-1.5">
+                AeroPulse
+                <span className="text-[10px] font-bold px-1.5 py-0.2 rounded-md bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-200/80 dark:border-emerald-800">
+                  AI
+                </span>
+              </span>
 
-            {/* Mobile Actions */}
-            <div className="flex items-center gap-1.5 lg:hidden">
-              <button
-                type="button"
-                onClick={onToggleDarkMode}
-                className="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
-                aria-label="Toggle theme"
-              >
-                {darkMode ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-600" />}
-              </button>
-              <button
-                type="button"
-                onClick={onToggleEmergencyMode}
-                className={`px-2.5 py-1.5 rounded-lg text-xs font-semibold border flex items-center gap-1 cursor-pointer ${
-                  emergencyMode
-                    ? 'bg-rose-600 text-white border-rose-600'
-                    : 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 border-slate-200 dark:border-slate-700'
-                }`}
-              >
-                <AlertTriangle className="w-3.5 h-3.5" />
-                <span>Smog Protocol</span>
-              </button>
+              <span className={`hidden sm:inline-flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${badge.bg}`}>
+                <span className={`w-1.5 h-1.5 rounded-full ${badge.dot}`} />
+                {badge.text}
+              </span>
             </div>
           </div>
 
-          {/* Environmental Controls & Location Selector */}
-          <div className="flex flex-wrap items-center gap-2.5">
-            
-            {/* Location Selector */}
-            <div className="flex items-center gap-1.5 bg-slate-100/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 rounded-xl px-2.5 py-1.5 text-xs">
+          {/* Center: Integrated Environmental Capsule */}
+          <div className="flex items-center bg-slate-100/90 dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800 rounded-2xl p-1 text-xs shadow-2xs">
+            {/* City Select */}
+            <div className="flex items-center gap-1.5 px-2 py-0.5">
               <MapPin className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
               <select
                 aria-label="Select City and Air Basin"
@@ -161,17 +134,16 @@ export const Header: React.FC<HeaderProps> = ({
                   const found = LOCATION_PRESETS.find(l => l.id === e.target.value);
                   if (found) onSelectLocation(found);
                 }}
-                className="bg-transparent text-slate-800 dark:text-slate-200 font-medium focus:outline-none cursor-pointer pr-1 max-w-[150px] sm:max-w-[210px] truncate"
+                className="bg-transparent text-slate-900 dark:text-slate-100 font-semibold focus:outline-none cursor-pointer max-w-[130px] sm:max-w-[180px] md:max-w-[210px] truncate pr-1"
               >
-                {/* If current location is custom (not in presets), list it first */}
                 {!LOCATION_PRESETS.some(l => l.id === currentLocation.id) && (
                   <option value={currentLocation.id} className="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100 font-bold">
-                    Custom: {currentLocation.name} (AQI {currentLocation.aqi})
+                    {currentLocation.name} (AQI {currentLocation.aqi})
                   </option>
                 )}
                 {LOCATION_PRESETS.map((loc) => (
                   <option key={loc.id} value={loc.id} className="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100">
-                    {loc.name} — AQI {loc.aqi} ({loc.country})
+                    {loc.name} — AQI {loc.aqi}
                   </option>
                 ))}
                 <option value="__custom__" className="bg-emerald-50 dark:bg-emerald-950 font-bold text-emerald-700 dark:text-emerald-300">
@@ -182,102 +154,100 @@ export const Header: React.FC<HeaderProps> = ({
               <button
                 type="button"
                 onClick={onOpenCustomLocationModal}
-                className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-100 dark:bg-emerald-950/70 text-emerald-800 dark:text-emerald-300 hover:bg-emerald-200 dark:hover:bg-emerald-900 transition-colors cursor-pointer"
-                title="Open Custom City & Atmospheric Simulator"
+                className="text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-emerald-50 hover:text-emerald-700 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 transition-colors cursor-pointer shrink-0"
+                title="Simulate Custom Atmospheric Environment"
               >
                 + Sim
               </button>
             </div>
 
-            {/* Inversion Cap Badge */}
-            <div className="hidden sm:flex items-center gap-1.5 bg-slate-100/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 rounded-xl px-3 py-1.5 text-xs text-slate-700 dark:text-slate-300" title="Thermal Inversion Boundary Layer Ceiling">
-              <Layers className="w-3.5 h-3.5 text-indigo-500" />
-              <span>Inversion Cap:</span>
+            {/* Inversion Cap */}
+            <div className="hidden lg:flex items-center gap-1.5 border-l border-slate-200 dark:border-slate-800 pl-2.5 pr-2 py-0.5 text-slate-600 dark:text-slate-300" title="Thermal Inversion Boundary Layer Ceiling">
+              <Layers className="w-3.5 h-3.5 text-indigo-500 shrink-0" />
+              <span>Cap:</span>
               <span className="font-bold text-slate-900 dark:text-white">{currentLocation.inversionCeilingMeters}m</span>
-              <span className="text-[10px] text-amber-700 dark:text-amber-300 font-medium bg-amber-100 dark:bg-amber-950/60 px-1.5 py-0.2 rounded">Trapped</span>
+              <span className="text-[10px] text-amber-700 dark:text-amber-300 font-semibold bg-amber-100/80 dark:bg-amber-950/80 px-1 py-0.2 rounded">Trapped</span>
             </div>
 
-            {/* Temp & Wind */}
-            <div className="hidden md:flex items-center gap-2 bg-slate-100/80 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 rounded-xl px-3 py-1.5 text-xs text-slate-700 dark:text-slate-300">
-              <Thermometer className="w-3.5 h-3.5 text-sky-500" />
+            {/* Weather & Wind */}
+            <div className="hidden xl:flex items-center gap-1.5 border-l border-slate-200 dark:border-slate-800 pl-2.5 pr-2 py-0.5 text-slate-600 dark:text-slate-300">
+              <Thermometer className="w-3.5 h-3.5 text-sky-500 shrink-0" />
               <span>{currentLocation.temperatureC}°C</span>
-              <span className="text-slate-300 dark:text-slate-600">|</span>
-              <Compass className="w-3.5 h-3.5 text-slate-400" />
+              <span className="text-slate-300 dark:text-slate-600">•</span>
               <span>{currentLocation.windSpeedKmh} km/h</span>
             </div>
+          </div>
 
-            {/* Right Hand Controls: Profile, Score, Theme, Copilot */}
-            <div className="flex items-center gap-2 ml-auto lg:ml-0">
-              
-              {/* Profile Config */}
-              <button
-                type="button"
-                onClick={onOpenHouseholdModal}
-                className="bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 rounded-xl px-2.5 py-1.5 text-xs font-medium flex items-center gap-1.5 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors shadow-2xs cursor-pointer"
-                title="Configure Family Members & Home Construction"
-              >
-                <Sliders className="w-3.5 h-3.5 text-teal-600 dark:text-teal-400" />
-                <span className="hidden sm:inline">Profile:</span>
-                <span className="font-semibold text-slate-900 dark:text-white truncate max-w-[100px]">{household.name}</span>
-              </button>
-
-              {/* Theme Toggle Button */}
-              <button
-                type="button"
-                onClick={onToggleDarkMode}
-                className="hidden lg:flex p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 transition-colors cursor-pointer"
-                title={darkMode ? 'Switch to Light Theme' : 'Switch to Dark Theme'}
-                aria-label="Toggle Theme"
-              >
-                {darkMode ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-600" />}
-              </button>
-
-              {/* Smog Emergency Protocol Button */}
-              <button
-                type="button"
-                onClick={onToggleEmergencyMode}
-                className={`hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
-                  emergencyMode
-                    ? 'bg-rose-600 text-white border-rose-600 shadow-xs'
-                    : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:border-rose-300 dark:hover:border-rose-800'
-                }`}
-              >
-                <AlertTriangle className={`w-3.5 h-3.5 ${emergencyMode ? 'text-white' : 'text-rose-500'}`} />
-                <span>{emergencyMode ? 'Emergency Active' : 'Smog Protocol'}</span>
-              </button>
-
-              {/* Professional Household Shield Score Badge */}
-              <div 
-                className="flex items-center gap-1.5 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 rounded-xl px-2.5 py-1.5 text-xs text-emerald-800 dark:text-emerald-300 font-semibold shadow-2xs"
-                title="Overall Household Air Shield Rating"
-              >
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
-                <span>Shield:</span>
-                <span className="text-slate-900 dark:text-white font-bold">{airShieldScore}%</span>
-              </div>
-
-              {/* Export Clean Air Report */}
-              <button
-                type="button"
-                onClick={onExportReport}
-                className="hidden xl:flex items-center gap-1.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 rounded-xl px-2.5 py-1.5 text-xs font-medium transition-colors cursor-pointer shadow-2xs"
-                title="Export Clean Air Action Summary"
-              >
-                <FileText className="w-3.5 h-3.5 text-slate-500" />
-                <span>Report</span>
-              </button>
-
-              {/* Ask Copilot Button */}
-              <button
-                type="button"
-                onClick={onOpenCopilot}
-                className="bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white rounded-xl px-3 py-1.5 text-xs font-semibold flex items-center gap-1.5 transition-all shadow-xs cursor-pointer"
-              >
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>Ask Copilot</span>
-              </button>
-
+          {/* Right: Actions Cluster */}
+          <div className="flex items-center gap-2 shrink-0">
+            
+            {/* Household Shield Score */}
+            <div 
+              className="flex items-center gap-1.5 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 rounded-xl px-2.5 py-1.5 text-xs text-emerald-800 dark:text-emerald-300 font-semibold shadow-2xs"
+              title="Overall Household Air Shield Rating"
+            >
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+              <span className="hidden sm:inline">Shield:</span>
+              <span className="text-slate-900 dark:text-white font-bold">{airShieldScore}%</span>
             </div>
+
+            {/* Profile Config */}
+            <button
+              type="button"
+              onClick={onOpenHouseholdModal}
+              className="hidden md:flex items-center gap-1.5 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-800 rounded-xl px-2.5 py-1.5 text-xs font-medium hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors shadow-2xs cursor-pointer"
+              title="Configure Family Profile & Home Envelope"
+            >
+              <Sliders className="w-3.5 h-3.5 text-teal-600 dark:text-teal-400" />
+              <span className="truncate max-w-[85px]">{household.name}</span>
+            </button>
+
+            {/* Smog Emergency Protocol */}
+            <button
+              type="button"
+              onClick={onToggleEmergencyMode}
+              className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
+                emergencyMode
+                  ? 'bg-rose-600 text-white border-rose-600 shadow-xs'
+                  : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-800 hover:border-rose-300 dark:hover:border-rose-900/60'
+              }`}
+              title="Smog Crisis Emergency Protocol"
+            >
+              <AlertTriangle className={`w-3.5 h-3.5 ${emergencyMode ? 'text-white' : 'text-rose-500'}`} />
+              <span className="hidden sm:inline">{emergencyMode ? 'Emergency' : 'Smog Protocol'}</span>
+            </button>
+
+            {/* Theme Toggle */}
+            <button
+              type="button"
+              onClick={onToggleDarkMode}
+              className="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors cursor-pointer"
+              title={darkMode ? 'Switch to Light Theme' : 'Switch to Dark Theme'}
+              aria-label="Toggle Theme"
+            >
+              {darkMode ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-600" />}
+            </button>
+
+            {/* Report Export */}
+            <button
+              type="button"
+              onClick={onExportReport}
+              className="hidden 2xl:flex items-center gap-1.5 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-800 rounded-xl px-2.5 py-1.5 text-xs font-medium transition-colors cursor-pointer shadow-2xs"
+              title="Export Clean Air Brief"
+            >
+              <FileText className="w-3.5 h-3.5 text-slate-400" />
+              <span>Report</span>
+            </button>
+
+            {/* Ask Copilot */}
+            <button
+              type="button"
+              onClick={onOpenCopilot}
+              className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl px-3 py-1.5 text-xs font-semibold flex items-center gap-1.5 transition-all shadow-xs cursor-pointer shrink-0"
+            >
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Ask Copilot</span>
+            </button>
 
           </div>
 

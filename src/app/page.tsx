@@ -222,7 +222,7 @@ AeroPulse AI — Urban Air Quality & Winter Smog Defense System`;
   }, [twinState]);
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col font-sans transition-colors duration-200">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col font-sans transition-colors duration-200 ambient-mesh">
       
       {/* Toast Notification */}
       {toastMessage && (
@@ -255,10 +255,10 @@ AeroPulse AI — Urban Air Quality & Winter Smog Defense System`;
       />
 
       {/* Main Content Area */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-5 space-y-6">
         
         {/* Navigation Tabs Bar */}
-        <div className="bg-white dark:bg-slate-900 p-1.5 rounded-2xl border border-slate-200/90 dark:border-slate-800 shadow-2xs flex items-center justify-between gap-2 overflow-x-auto">
+        <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-1.5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-2xs flex items-center justify-between gap-2 overflow-x-auto no-scrollbar">
           <div className="flex items-center gap-1.5 min-w-max">
             {[
               { id: 'overview', label: 'Air & Inversion', icon: Activity },
@@ -278,15 +278,17 @@ AeroPulse AI — Urban Air Quality & Winter Smog Defense System`;
                   onClick={() => handleTabChange(tab.id as any)}
                   className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
                     isActive
-                      ? 'bg-emerald-600 text-white shadow-xs'
-                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800'
+                      ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-950 shadow-xs'
+                      : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100/80 dark:hover:bg-slate-800/80'
                   }`}
                 >
                   <Icon className="w-4 h-4" />
                   <span>{tab.label}</span>
                   {tab.badge && (
-                    <span className={`text-[10px] px-1.5 py-0.2 rounded-md ${
-                      isActive ? 'bg-emerald-700 text-emerald-100' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400'
+                    <span className={`text-[10px] px-1.5 py-0.2 rounded-md font-bold ${
+                      isActive 
+                        ? 'bg-white/20 text-white dark:bg-slate-900/20 dark:text-slate-900' 
+                        : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400'
                     }`}>
                       {tab.badge}
                     </span>
@@ -379,17 +381,17 @@ AeroPulse AI — Urban Air Quality & Winter Smog Defense System`;
 
       </main>
 
-      {/* Floating Ask Copilot Bubble */}
+      {/* Floating Ask Copilot Pill */}
       <button
         type="button"
         onClick={() => {
           setCopilotInitialPrompt('');
           setCopilotOpen(true);
         }}
-        className="fixed bottom-6 right-6 z-40 bg-emerald-600 hover:bg-emerald-700 text-white p-3.5 rounded-2xl shadow-lg flex items-center gap-2 font-bold text-xs transition-all hover:scale-105 cursor-pointer"
+        className="fixed bottom-5 right-5 z-40 bg-slate-900/95 hover:bg-slate-900 dark:bg-emerald-600 dark:hover:bg-emerald-500 text-white px-3.5 py-2.5 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.18)] backdrop-blur-md border border-slate-700/50 dark:border-emerald-400/40 flex items-center gap-2 font-bold text-xs transition-all hover:scale-105 cursor-pointer"
       >
-        <Sparkles className="w-4 h-4" />
-        <span>Ask AeroPulse AI</span>
+        <Sparkles className="w-4 h-4 text-emerald-400 dark:text-emerald-100" />
+        <span>Ask Copilot</span>
       </button>
 
       {/* Modals & Drawers */}
