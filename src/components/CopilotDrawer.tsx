@@ -56,7 +56,7 @@ export const CopilotDrawer: React.FC<CopilotDrawerProps> = ({
     {
       id: 'welcome',
       sender: 'assistant',
-      content: `Hello! I am **AeroPulse AI**, your GenAI Urban Air Quality and Smog Defense Copilot.\n\nI have analyzed your location (**${location.name}**, AQI **${location.aqi}**) and your household profile. How can I help protect your family or optimize your low-emission routine today?`,
+      content: `Hello! I am **AeroPulse AI**, your GenAI Urban Air Quality and Smog Defense Copilot.\n\nI have analyzed your location (**${location?.name || 'your area'}**, AQI **${location?.aqi || 350}**) and your household profile. How can I help protect your family or optimize your low-emission routine today?`,
       timestamp: 'Just now',
       suggestions: [
         'How do I size a Corsi-Rosenthal box for my rooms?',
@@ -170,7 +170,9 @@ export const CopilotDrawer: React.FC<CopilotDrawerProps> = ({
   }, [initialPrompt, isOpen, handleSend]);
 
   useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (typeof chatEndRef.current?.scrollIntoView === 'function') {
+      chatEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
   }, [messages, isLoading]);
 
   const handleCopy = (id: string, text: string) => {
@@ -224,7 +226,12 @@ export const CopilotDrawer: React.FC<CopilotDrawerProps> = ({
       />
 
       {/* Drawer Panel */}
-      <div className="relative w-full max-w-lg bg-white dark:bg-slate-950 border-l border-slate-200 dark:border-slate-800 h-full flex flex-col shadow-2xl z-10">
+      <div 
+        role="dialog"
+        aria-modal="true"
+        aria-label="AeroPulse AI Copilot Drawer"
+        className="relative w-full max-w-lg bg-white dark:bg-slate-950 border-l border-slate-200 dark:border-slate-800 h-full flex flex-col shadow-2xl z-10"
+      >
         
         {/* Drawer Header */}
         <div className="p-4 border-b border-slate-200/80 dark:border-slate-800 bg-slate-50/80 dark:bg-slate-900/80 flex items-center justify-between">
@@ -251,6 +258,7 @@ export const CopilotDrawer: React.FC<CopilotDrawerProps> = ({
               onClick={() => setMessages([messages[0]])}
               className="p-1.5 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
               title="Reset conversation"
+              aria-label="Reset conversation"
             >
               <RotateCcw className="w-4 h-4" />
             </button>
@@ -258,6 +266,7 @@ export const CopilotDrawer: React.FC<CopilotDrawerProps> = ({
               type="button"
               onClick={onClose}
               className="p-1.5 text-slate-400 hover:text-slate-700 dark:hover:text-white rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+              aria-label="Close Copilot drawer"
             >
               <X className="w-5 h-5" />
             </button>
@@ -381,6 +390,7 @@ export const CopilotDrawer: React.FC<CopilotDrawerProps> = ({
                   : 'bg-white dark:bg-slate-950 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700 hover:text-slate-900 dark:hover:text-white'
               }`}
               title="Speak with microphone"
+              aria-label={isListening ? "Stop voice dictation" : "Start voice dictation"}
             >
               {isListening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
             </button>
@@ -389,6 +399,7 @@ export const CopilotDrawer: React.FC<CopilotDrawerProps> = ({
             <button
               type="submit"
               disabled={!input.trim() || isLoading}
+              aria-label="Send message to Copilot"
               className="p-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 disabled:bg-slate-200 dark:disabled:bg-slate-800 text-white disabled:text-slate-400 transition-all shadow-xs cursor-pointer"
             >
               <Send className="w-4 h-4" />

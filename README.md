@@ -3,7 +3,7 @@
 [![Next.js 16](https://img.shields.io/badge/Next.js-16%20Turbopack-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
 [![Google Gemini GenAI](https://img.shields.io/badge/Google%20GenAI-Gemini%202.5%20Flash-4285F4?style=for-the-badge&logo=google)](https://ai.google.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Strict%20Zero%20Any-3178C6?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
-[![Vitest](https://img.shields.io/badge/Vitest-25%2F25%20Tests%20Passing-729B1B?style=for-the-badge&logo=vitest)](https://vitest.dev/)
+[![Vitest](https://img.shields.io/badge/Vitest-32%2F32%20Tests%20Passing-729B1B?style=for-the-badge&logo=vitest)](https://vitest.dev/)
 [![WCAG](https://img.shields.io/badge/Accessibility-WCAG%20AA%20Compliant-0f766e?style=for-the-badge)](https://www.w3.org/WAI/standards-guidelines/wcag/)
 
 > **AeroPulse AI** is a GenAI-powered urban air quality and winter smog defense system engineered to help families and communities navigate severe seasonal smog. It suggests low-emission daily routines, indoor air quality (IAQ) hacks, and sustainable alternatives tailored to their location and lifestyle, while **clearly explaining and quantifying the direct health and emissions impact of their choices**.
@@ -88,15 +88,15 @@ Visit [http://localhost:3000](http://localhost:3000) to interact with the dashbo
 
 ---
 
-## 🧪 Testing Suite (25 Tests Passing)
+## 🧪 Testing Suite (32 Tests Passing)
 
 Run the comprehensive unit and integration test suite:
 ```bash
 npm run test
 ```
 - `src/test/airCalculations.test.ts` (10 tests): Validates Berkeley Earth cigarette equivalence math, multi-zone indoor infiltration physics, Corsi-Rosenthal CADR boosts, vulnerability adjustments, and custom location diurnal generators with extreme boundary conditions.
-- `src/test/api.test.ts` (3 tests): Tests `/api/copilot` endpoint schema validation, Gemini API integration, and domain fallback engine.
-- `src/test/components.test.tsx` (12 tests): Tests rendering of the Air Quality Overview, Impact Meter (including Before vs. After Delta view), Home Air Twin, Daily Routine Scheduler, IAQ Hacks Library with Corsi-Rosenthal calculator, Sustainable Alternatives Matrix, Community Hub, Household Modal, Smog Emergency Modal, and Custom Location Simulator.
+- `src/test/api.test.ts` (7 tests): Tests `/api/copilot` endpoint schema validation, 2,000-character payload boundaries, malformed JSON defense, security headers (nosniff, DENY), Gemini API integration, and domain fallback engine.
+- `src/test/components.test.tsx` (15 tests): Tests rendering and accessibility of Air Quality Overview, Impact Meter (including Before vs. After Delta view), Home Air Twin, Daily Routine Scheduler, IAQ Hacks Library with Corsi-Rosenthal calculator, Sustainable Alternatives Matrix, Community Hub, Household Modal, Smog Emergency Modal, Custom Location Simulator, Copilot Drawer, and Header theme/emergency controls.
 
 ---
 

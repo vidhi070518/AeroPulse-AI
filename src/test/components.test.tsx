@@ -13,6 +13,7 @@ import { HouseholdModal } from '../components/HouseholdModal';
 import { SmogEmergencyModal } from '../components/SmogEmergencyModal';
 import { CustomLocationModal } from '../components/CustomLocationModal';
 import { ReportModal } from '../components/ReportModal';
+import { CopilotDrawer } from '../components/CopilotDrawer';
 import { LOCATION_PRESETS, DEFAULT_HOUSEHOLD } from '../data/mockData';
 import { calculateDirectImpact, generateAdaptiveDailyRoutine } from '../utils/airCalculations';
 import { HomeTwinState } from '../types';
@@ -237,6 +238,57 @@ describe('UI Components Render Suite', () => {
     expect(copyBtn).toBeInTheDocument();
     fireEvent.click(copyBtn);
     expect(onCopyMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('renders CopilotDrawer and handles close action', () => {
+    const onCloseMock = vi.fn();
+    render(
+      <CopilotDrawer
+        isOpen={true}
+        onClose={onCloseMock}
+        location={delhi}
+        household={DEFAULT_HOUSEHOLD}
+        roomPm25={{ kitchen: 65, livingRoom: 22, bedroom: 12 }}
+      />
+    );
+
+    expect(screen.getByText(/AeroPulse AI Copilot/i)).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/Ask anything/i)).toBeInTheDocument();
+    const closeBtn = screen.getByLabelText(/Close Copilot drawer/i);
+    expect(closeBtn).toBeInTheDocument();
+    fireEvent.click(closeBtn);
+    expect(onCloseMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('triggers dark mode and emergency mode callbacks from Header with accessibility labels', () => {
+    const onToggleThemeMock = vi.fn();
+    const onToggleEmergencyMock = vi.fn();
+    render(
+      <Header
+        currentLocation={delhi}
+        onSelectLocation={vi.fn()}
+        household={DEFAULT_HOUSEHOLD}
+        onOpenHouseholdModal={vi.fn()}
+        onOpenCopilot={vi.fn()}
+        emergencyMode={false}
+        onToggleEmergencyMode={onToggleEmergencyMock}
+        airShieldScore={88}
+        onExportReport={vi.fn()}
+        darkMode={false}
+        onToggleDarkMode={onToggleThemeMock}
+        onOpenCustomLocationModal={vi.fn()}
+      />
+    );
+
+    const themeBtn = screen.getByLabelText(/Switch to Dark Theme/i);
+    expect(themeBtn).toBeInTheDocument();
+    fireEvent.click(themeBtn);
+    expect(onToggleThemeMock).toHaveBeenCalledTimes(1);
+
+    const emergencyBtn = screen.getByLabelText(/Smog Crisis Emergency Protocol/i);
+    expect(emergencyBtn).toBeInTheDocument();
+    fireEvent.click(emergencyBtn);
+    expect(onToggleEmergencyMock).toHaveBeenCalledTimes(1);
   });
 });
 

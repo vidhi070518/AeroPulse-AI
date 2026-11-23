@@ -35,6 +35,23 @@ describe('AeroPulse Copilot API Endpoint', () => {
 
     expect(res.status).toBe(400);
     expect(json.success).toBe(false);
+    expect(res.headers.get('X-Content-Type-Options')).toBe('nosniff');
+    expect(res.headers.get('X-Frame-Options')).toBe('DENY');
+  });
+
+  it('rejects malformed JSON payloads with 400 status', async () => {
+    const req = new NextRequest('http://localhost:3000/api/copilot', {
+      method: 'POST',
+      body: 'invalid-json{{{'
+    });
+
+    const res = await POST(req);
+    const json = await res.json();
+
+    expect(res.status).toBe(400);
+    expect(json.success).toBe(false);
+    expect(json.error).toContain('Malformed JSON');
+    expect(res.headers.get('X-Content-Type-Options')).toBe('nosniff');
   });
 
   it('rejects requests exceeding maximum character limit', async () => {

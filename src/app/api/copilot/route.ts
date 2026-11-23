@@ -21,22 +21,40 @@ interface CopilotRequestBody {
   roomPm25?: FallbackRoomPm25Context;
 }
 
+const SECURITY_HEADERS = {
+  'X-Content-Type-Options': 'nosniff',
+  'X-Frame-Options': 'DENY',
+  'Referrer-Policy': 'strict-origin-when-cross-origin',
+  'Cache-Control': 'no-store, max-age=0'
+};
+
 export async function POST(req: NextRequest) {
   try {
-    const body = (await req.json()) as CopilotRequestBody;
+    let body: CopilotRequestBody;
+    try {
+      body = (await req.json()) as CopilotRequestBody;
+    } catch {
+      return NextResponse.json(
+        { success: false, error: 'Malformed JSON payload' },
+        { status: 400, headers: SECURITY_HEADERS }
+      );
+    }
+
     const { message, history, location, household, roomPm25 } = body;
 
     if (!message || typeof message !== 'string' || message.trim().length === 0) {
       return NextResponse.json(
         { success: false, error: 'Message text is required' },
-        { status: 400 }
+        { status: 400, headers: SECURITY_HEADERS }
       );
     }
 
-    if (message.length > 2000) {
+    const cleanMessage = message.trim().replace(/\0/g, '');
+
+    if (cleanMessage.length > 2000) {
       return NextResponse.json(
         { success: false, error: 'Message exceeds maximum allowed length of 2000 characters' },
-        { status: 400 }
+        { status: 400, headers: SECURITY_HEADERS }
       );
     }
 
@@ -99,7 +117,7 @@ COMMUNICATION DIRECTIVES:
 
         contentsPayload.push({
           role: 'user',
-          parts: [{ text: `User Question: "${message}"` }]
+          parts: [{ text: `User Question: "${cleanMessage}"` }]
         });
 
         const response = await ai.models.generateContent({
@@ -109,36 +127,42 @@ COMMUNICATION DIRECTIVES:
 
         const replyText = response.text || 'Unable to generate response. Please try again.';
 
-        return NextResponse.json({
-          success: true,
-          data: {
-            reply: replyText,
-            source: 'gemini-2.5-flash',
-            suggestions: generateSmartSuggestions(message, location?.aqi || 350)
-          }
-        });
+        return NextResponse.json(
+          {
+            success: true,
+            data: {
+              reply: replyText,
+              source: 'gemini-2.5-flash',
+              suggestions: generateSmartSuggestions(cleanMessage, location?.aqi || 350)
+            }
+          },
+          { headers: SECURITY_HEADERS }
+        );
       } catch (geminiError: unknown) {
         console.warn('Gemini API request failed, falling back to expert engine:', geminiError);
       }
     }
 
     // Intelligent Fallback Expert Engine (ensures 100% reliability for evaluation)
-    const fallbackReply = generateExpertFallbackResponse(message, location, household, roomPm25);
+    const fallbackReply = generateExpertFallbackResponse(cleanMessage, location, household, roomPm25);
 
-    return NextResponse.json({
-      success: true,
-      data: {
-        reply: fallbackReply,
-        source: 'aeropulse-expert-engine',
-        suggestions: generateSmartSuggestions(message, location?.aqi || 350)
-      }
-    });
+    return NextResponse.json(
+      {
+        success: true,
+        data: {
+          reply: fallbackReply,
+          source: 'aeropulse-expert-engine',
+          suggestions: generateSmartSuggestions(cleanMessage, location?.aqi || 350)
+        }
+      },
+      { headers: SECURITY_HEADERS }
+    );
 
   } catch (error: unknown) {
     console.error('Copilot API error:', error);
     return NextResponse.json(
       { success: false, error: 'Internal server error processing copilot request' },
-      { status: 500 }
+      { status: 500, headers: SECURITY_HEADERS }
     );
   }
 }

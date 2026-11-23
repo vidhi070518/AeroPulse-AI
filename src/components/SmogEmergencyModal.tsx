@@ -42,7 +42,12 @@ export const SmogEmergencyModal: React.FC<SmogEmergencyModalProps> = ({
       />
 
       {/* Modal Dialog */}
-      <div className="relative w-full max-w-xl bg-white dark:bg-slate-950 border border-rose-300 dark:border-rose-800 rounded-3xl shadow-2xl overflow-hidden z-10 flex flex-col">
+      <div 
+        role="dialog"
+        aria-modal="true"
+        aria-label="Hazardous Winter Smog Crisis Protocol"
+        className="relative w-full max-w-xl bg-white dark:bg-slate-950 border border-rose-300 dark:border-rose-800 rounded-3xl shadow-2xl overflow-hidden z-10 flex flex-col"
+      >
         
         {/* Header */}
         <div className="bg-rose-600 text-white p-4 flex items-center justify-between">
@@ -59,8 +64,10 @@ export const SmogEmergencyModal: React.FC<SmogEmergencyModalProps> = ({
           </div>
 
           <button
+            type="button"
             onClick={onClose}
-            className="p-1 rounded-lg hover:bg-rose-700 text-white transition-colors"
+            aria-label="Close emergency smog protocol modal"
+            className="p-1 rounded-lg hover:bg-rose-700 text-white transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>

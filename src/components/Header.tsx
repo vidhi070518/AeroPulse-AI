@@ -155,6 +155,7 @@ export const Header: React.FC<HeaderProps> = ({
                 onClick={onOpenCustomLocationModal}
                 className="text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-emerald-50 hover:text-emerald-700 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 transition-colors cursor-pointer shrink-0"
                 title="Simulate Custom Atmospheric Environment"
+                aria-label="Simulate Custom Atmospheric Environment"
               >
                 + Sim
               </button>
@@ -196,6 +197,7 @@ export const Header: React.FC<HeaderProps> = ({
               onClick={onOpenHouseholdModal}
               className="hidden md:flex items-center gap-1.5 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-800 rounded-xl px-2.5 py-1.5 text-xs font-medium hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors shadow-2xs cursor-pointer"
               title="Configure Family Profile & Home Envelope"
+              aria-label={`Configure Family Profile: ${household.name}`}
             >
               <Sliders className="w-3.5 h-3.5 text-teal-600 dark:text-teal-400" />
               <span className="truncate max-w-[85px]">{household.name}</span>
@@ -211,6 +213,7 @@ export const Header: React.FC<HeaderProps> = ({
                   : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-800 hover:border-rose-300 dark:hover:border-rose-900/60'
               }`}
               title="Smog Crisis Emergency Protocol"
+              aria-label="Smog Crisis Emergency Protocol"
             >
               <AlertTriangle className={`w-3.5 h-3.5 ${emergencyMode ? 'text-white' : 'text-rose-500'}`} />
               <span className="hidden sm:inline">{emergencyMode ? 'Emergency' : 'Smog Protocol'}</span>
@@ -222,7 +225,7 @@ export const Header: React.FC<HeaderProps> = ({
               onClick={onToggleDarkMode}
               className="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors cursor-pointer"
               title={darkMode ? 'Switch to Light Theme' : 'Switch to Dark Theme'}
-              aria-label="Toggle Theme"
+              aria-label={darkMode ? 'Switch to Light Theme' : 'Switch to Dark Theme'}
             >
               {darkMode ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-600" />}
             </button>
@@ -233,6 +236,7 @@ export const Header: React.FC<HeaderProps> = ({
               onClick={onExportReport}
               className="hidden 2xl:flex items-center gap-1.5 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-800 rounded-xl px-2.5 py-1.5 text-xs font-medium transition-colors cursor-pointer shadow-2xs"
               title="Export Clean Air Brief"
+              aria-label="Export Clean Air Action Brief"
             >
               <FileText className="w-3.5 h-3.5 text-slate-400" />
               <span>Report</span>

@@ -49,7 +49,13 @@ export const ReportModal: React.FC<ReportModalProps> = ({
         onClick={onClose}
         className="fixed inset-0 bg-slate-900/40 dark:bg-slate-950/70 backdrop-blur-xs" 
       />
-      <div id="printable-action-brief" className="relative w-full max-w-2xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-2xl z-10 max-h-[88vh] overflow-y-auto">
+      <div 
+        role="dialog"
+        aria-modal="true"
+        aria-label="Household Clean Air Action Brief"
+        id="printable-action-brief" 
+        className="relative w-full max-w-2xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-2xl z-10 max-h-[88vh] overflow-y-auto"
+      >
         <div className="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800">
           <div className="flex items-center gap-2.5">
             <div className="p-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">

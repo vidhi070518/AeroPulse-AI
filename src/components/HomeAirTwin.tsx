@@ -147,11 +147,15 @@ export const HomeAirTwin: React.FC<HomeAirTwinProps> = ({
               <div className="flex items-center justify-between text-xs bg-white dark:bg-slate-900 p-2.5 rounded-xl border border-slate-200/70 dark:border-slate-800">
                 <span className="text-slate-700 dark:text-slate-300 font-medium">Stove Active</span>
                 <button
+                  type="button"
+                  role="switch"
+                  aria-checked={twinState.kitchen.cookingActive}
+                  aria-label="Toggle Kitchen Stove Active"
                   onClick={() => onUpdateState({
                     ...twinState,
                     kitchen: { ...twinState.kitchen, cookingActive: !twinState.kitchen.cookingActive }
                   })}
-                  className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all ${
+                  className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                     twinState.kitchen.cookingActive
                       ? 'bg-rose-600 text-white shadow-2xs'
                       : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'
@@ -166,11 +170,13 @@ export const HomeAirTwin: React.FC<HomeAirTwinProps> = ({
                 <span className="text-slate-700 dark:text-slate-300 font-medium">Stove Fuel</span>
                 <div className="flex gap-1">
                   <button
+                    type="button"
+                    aria-label="Set kitchen stove fuel to LPG gas"
                     onClick={() => onUpdateState({
                       ...twinState,
                       kitchen: { ...twinState.kitchen, fuel: 'gas' }
                     })}
-                    className={`px-2 py-0.5 rounded text-[11px] font-semibold transition-colors ${
+                    className={`px-2 py-0.5 rounded text-[11px] font-semibold transition-colors cursor-pointer ${
                       twinState.kitchen.fuel === 'gas'
                         ? 'bg-amber-600 text-white'
                         : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'
@@ -179,11 +185,13 @@ export const HomeAirTwin: React.FC<HomeAirTwinProps> = ({
                     LPG Gas
                   </button>
                   <button
+                    type="button"
+                    aria-label="Set kitchen stove fuel to clean electric induction"
                     onClick={() => onUpdateState({
                       ...twinState,
                       kitchen: { ...twinState.kitchen, fuel: 'induction' }
                     })}
-                    className={`px-2 py-0.5 rounded text-[11px] font-semibold transition-colors ${
+                    className={`px-2 py-0.5 rounded text-[11px] font-semibold transition-colors cursor-pointer ${
                       twinState.kitchen.fuel === 'induction'
                         ? 'bg-emerald-600 text-white'
                         : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'
@@ -201,11 +209,15 @@ export const HomeAirTwin: React.FC<HomeAirTwinProps> = ({
                   Chimney Hood
                 </span>
                 <button
+                  type="button"
+                  role="switch"
+                  aria-checked={twinState.kitchen.exhaustOn}
+                  aria-label="Toggle kitchen chimney exhaust fan"
                   onClick={() => onUpdateState({
                     ...twinState,
                     kitchen: { ...twinState.kitchen, exhaustOn: !twinState.kitchen.exhaustOn }
                   })}
-                  className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all ${
+                  className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                     twinState.kitchen.exhaustOn
                       ? 'bg-indigo-600 text-white shadow-2xs'
                       : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'

@@ -20,3 +20,6 @@ Object.defineProperty(window, 'matchMedia', {
 window.URL.createObjectURL = vi.fn(() => 'blob:mock-url');
 window.URL.revokeObjectURL = vi.fn();
 
+// Mock HTMLElement.prototype.scrollIntoView for JSDOM
+window.HTMLElement.prototype.scrollIntoView = vi.fn();
+
