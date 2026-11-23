@@ -10,8 +10,7 @@ import {
   Activity, 
   ShieldAlert, 
   TrendingUp, 
-  Clock,
-  Wind
+  Clock
 } from 'lucide-react';
 
 interface AirQualityOverviewProps {
@@ -167,7 +166,7 @@ export const AirQualityOverview: React.FC<AirQualityOverviewProps> = ({
               <span className="text-[10px] uppercase tracking-widest text-slate-400 dark:text-slate-500 font-bold">
                 Air Quality Index
               </span>
-              <span className="text-5xl font-black tracking-tight text-slate-900 dark:text-white mt-0.5">
+              <span aria-live="polite" aria-atomic="true" className="text-5xl font-black tracking-tight text-slate-900 dark:text-white mt-0.5">
                 {location.aqi}
               </span>
               <span className="text-[10px] text-slate-400 dark:text-slate-500 font-semibold mt-0.5">

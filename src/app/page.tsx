@@ -5,7 +5,8 @@ import {
   LocationCity, 
   HouseholdProfile, 
   HomeTwinState, 
-  SustainableAlternative 
+  SustainableAlternative,
+  NavigationTab
 } from '../types';
 import { 
   LOCATION_PRESETS, 
@@ -46,31 +47,25 @@ import {
 
 export default function HomeDashboard() {
   // Theme state: defaults to false (clean neutral light mode), persists in localStorage
-  const [darkMode, setDarkMode] = useState<boolean>(false);
+  const [darkMode, setDarkMode] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('aeropulse-theme') === 'dark';
+    }
+    return false;
+  });
 
   useEffect(() => {
-    const saved = localStorage.getItem('aeropulse-theme');
-    if (saved === 'dark') {
-      setDarkMode(true);
+    if (darkMode) {
       document.documentElement.classList.add('dark');
+      localStorage.setItem('aeropulse-theme', 'dark');
     } else {
-      setDarkMode(false);
       document.documentElement.classList.remove('dark');
+      localStorage.setItem('aeropulse-theme', 'light');
     }
-  }, []);
+  }, [darkMode]);
 
   const toggleDarkMode = () => {
-    setDarkMode(prev => {
-      const next = !prev;
-      if (next) {
-        document.documentElement.classList.add('dark');
-        localStorage.setItem('aeropulse-theme', 'dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-        localStorage.setItem('aeropulse-theme', 'light');
-      }
-      return next;
-    });
+    setDarkMode(prev => !prev);
   };
 
   // Primary States
@@ -211,15 +206,13 @@ AeroPulse AI — Urban Air Quality & Winter Smog Defense System`;
   };
 
   // Calculate overall shield score
-  const airShieldScore = useMemo(() => {
-    let score = 50;
-    if (twinState.livingRoom.windowsState === 'sealed') score += 12;
-    if (twinState.kitchen.fuel === 'induction') score += 14;
-    if (twinState.livingRoom.purifierMode !== 'off') score += 12;
-    if (twinState.bedroom.doorClosed) score += 6;
-    if (twinState.bedroom.bedtimeSeal) score += 6;
-    return Math.min(98, score);
-  }, [twinState]);
+  let airShieldScore = 50;
+  if (twinState.livingRoom.windowsState === 'sealed') airShieldScore += 12;
+  if (twinState.kitchen.fuel === 'induction') airShieldScore += 14;
+  if (twinState.livingRoom.purifierMode !== 'off') airShieldScore += 12;
+  if (twinState.bedroom.doorClosed) airShieldScore += 6;
+  if (twinState.bedroom.bedtimeSeal) airShieldScore += 6;
+  airShieldScore = Math.min(98, airShieldScore);
 
   return (
     <div className="min-h-screen bg-[var(--background)] text-slate-900 dark:text-slate-100 flex flex-col font-sans transition-colors duration-200 ambient-mesh">
@@ -255,7 +248,7 @@ AeroPulse AI — Urban Air Quality & Winter Smog Defense System`;
       />
 
       {/* Main Content Area */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-5 space-y-6">
+      <main id="main-content" tabIndex={-1} className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-5 space-y-6 focus:outline-none">
         
         {/* Navigation Tabs Bar */}
         <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md p-1.5 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-2xs flex items-center justify-between gap-2 overflow-x-auto no-scrollbar">
@@ -275,7 +268,7 @@ AeroPulse AI — Urban Air Quality & Winter Smog Defense System`;
                 <button
                   type="button"
                   key={tab.id}
-                  onClick={() => handleTabChange(tab.id as any)}
+                  onClick={() => handleTabChange(tab.id as NavigationTab)}
                   className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
                     isActive
                       ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-950 shadow-xs'

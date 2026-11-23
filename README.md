@@ -2,10 +2,29 @@
 
 [![Next.js 16](https://img.shields.io/badge/Next.js-16%20Turbopack-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
 [![Google Gemini GenAI](https://img.shields.io/badge/Google%20GenAI-Gemini%202.5%20Flash-4285F4?style=for-the-badge&logo=google)](https://ai.google.dev/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-Strict-3178C6?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
-[![Vitest](https://img.shields.io/badge/Vitest-13%2F13%20Tests%20Passing-729B1B?style=for-the-badge&logo=vitest)](https://vitest.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-Strict%20Zero%20Any-3178C6?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
+[![Vitest](https://img.shields.io/badge/Vitest-25%2F25%20Tests%20Passing-729B1B?style=for-the-badge&logo=vitest)](https://vitest.dev/)
+[![WCAG](https://img.shields.io/badge/Accessibility-WCAG%20AA%20Compliant-0f766e?style=for-the-badge)](https://www.w3.org/WAI/standards-guidelines/wcag/)
 
-> **AeroPulse AI** is a GenAI-powered urban air quality and winter smog defense system engineered to help families and communities navigate severe seasonal smog. It provides low-emission daily routines, indoor air quality (IAQ) hacks, and sustainable alternatives tailored to household architecture and vulnerabilities, while **clearly quantifying the direct health and emissions impact of every choice**.
+> **AeroPulse AI** is a GenAI-powered urban air quality and winter smog defense system engineered to help families and communities navigate severe seasonal smog. It suggests low-emission daily routines, indoor air quality (IAQ) hacks, and sustainable alternatives tailored to their location and lifestyle, while **clearly explaining and quantifying the direct health and emissions impact of their choices**.
+
+---
+
+## 🎯 Problem Statement Alignment Matrix
+
+| Hackathon Requirement | AeroPulse AI Implementation | Verified Source |
+| :--- | :--- | :--- |
+| **GenAI-Powered Assistant** | Multi-modal Copilot powered by Google Gemini 2.5 Flash via `@google/genai` with voice dictation and context-aware atmospheric reasoning. | [`src/app/api/copilot/route.ts`](src/app/api/copilot/route.ts) & [`CopilotDrawer.tsx`](src/components/CopilotDrawer.tsx) |
+| **Families & Vulnerabilities** | Granular household profiler modeling infants, children, seniors, asthmatic sensitivities, building envelope leakage, and stove types. | [`HouseholdModal.tsx`](src/components/HouseholdModal.tsx) & [`HomeAirTwin.tsx`](src/components/HomeAirTwin.tsx) |
+| **Severe Winter Smog & Inversion** | Atmospheric physics engine calculating nocturnal thermal inversion ceilings, identifying safe diurnal solar ventilation windows. | [`AirQualityOverview.tsx`](src/components/AirQualityOverview.tsx) & [`airCalculations.ts`](src/utils/airCalculations.ts) |
+| **Low-Emission Daily Routines** | Dynamic hourly routine synchronized to the diurnal boundary layer, preventing exposure during peak morning ground traps (6:30–8:30 AM). | [`DailyRoutineScheduler.tsx`](src/components/DailyRoutineScheduler.tsx) with .ICS Calendar Sync |
+| **Indoor Air Quality (IAQ) Hacks** | Evidence-based catalog including DIY Corsi-Rosenthal boxes with an interactive CADR sizer, kitchen chimney makeup air, and damp mopping. | [`IAQHacksLibrary.tsx`](src/components/IAQHacksLibrary.tsx) |
+| **Tailored Sustainable Alternatives** | Side-by-side transition matrix (e.g. gas stove ➔ induction, solo car ➔ metro rail) with ROI timelines and monthly fuel/health savings. | [`SustainableAlternativesMatrix.tsx`](src/components/SustainableAlternativesMatrix.tsx) |
+| **Clearly Explaining Direct Impact** | Interactive "Before vs. After Delta" meter computing Berkeley Earth cigarette equivalents avoided, lung deposition cuts (-94%), and CO₂ saved. | [`DirectImpactMeter.tsx`](src/components/DirectImpactMeter.tsx) |
+| **Community & Collective Shield** | Neighborhood action hub for school gate anti-idling zones, clean walking corridors, and bulk MERV-13 filter buying co-ops. | [`CommunityHub.tsx`](src/components/CommunityHub.tsx) |
+| **Custom Atmospheric Simulator** | Dynamic environment generator with GPS auto-detection and disaster presets (Wildfire Smoke Wave, Stubble Burning, Fireworks). | [`CustomLocationModal.tsx`](src/components/CustomLocationModal.tsx) |
+
+---
 
 ---
 
@@ -69,15 +88,15 @@ Visit [http://localhost:3000](http://localhost:3000) to interact with the dashbo
 
 ---
 
-## 🧪 Testing Suite
+## 🧪 Testing Suite (25 Tests Passing)
 
-Run the comprehensive unit test suite:
+Run the comprehensive unit and integration test suite:
 ```bash
 npm run test
 ```
-- `src/test/airCalculations.test.ts`: Validates Berkeley Earth math, Home Twin simulation physics, impact metrics, and routine generators.
-- `src/test/api.test.ts`: Tests `/api/copilot` endpoint validation, Gemini API integration, and domain fallback engine.
-- `src/test/components.test.tsx`: Tests rendering of the Air Quality Overview, Impact Meter, and Home Air Twin.
+- `src/test/airCalculations.test.ts` (10 tests): Validates Berkeley Earth cigarette equivalence math, multi-zone indoor infiltration physics, Corsi-Rosenthal CADR boosts, vulnerability adjustments, and custom location diurnal generators with extreme boundary conditions.
+- `src/test/api.test.ts` (3 tests): Tests `/api/copilot` endpoint schema validation, Gemini API integration, and domain fallback engine.
+- `src/test/components.test.tsx` (12 tests): Tests rendering of the Air Quality Overview, Impact Meter (including Before vs. After Delta view), Home Air Twin, Daily Routine Scheduler, IAQ Hacks Library with Corsi-Rosenthal calculator, Sustainable Alternatives Matrix, Community Hub, Household Modal, Smog Emergency Modal, and Custom Location Simulator.
 
 ---
 

@@ -213,7 +213,7 @@ export const HouseholdModal: React.FC<HouseholdModalProps> = ({
                 <select
                   aria-label="Building Type"
                   value={profile.homeType}
-                  onChange={(e) => setProfile({ ...profile, homeType: e.target.value as any })}
+                  onChange={(e) => setProfile({ ...profile, homeType: e.target.value as HouseholdProfile['homeType'] })}
                   className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-slate-900 dark:text-white"
                 >
                   <option value="high-rise-apartment">High-Rise Apartment (Floor 5+)</option>
@@ -228,7 +228,7 @@ export const HouseholdModal: React.FC<HouseholdModalProps> = ({
                 <select
                   aria-label="Envelope Sealing Quality"
                   value={profile.sealingQuality}
-                  onChange={(e) => setProfile({ ...profile, sealingQuality: e.target.value as any })}
+                  onChange={(e) => setProfile({ ...profile, sealingQuality: e.target.value as HouseholdProfile['sealingQuality'] })}
                   className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-slate-900 dark:text-white"
                 >
                   <option value="drafty-leaky">Drafty &amp; Leaky (High Infiltration ~68%)</option>
@@ -253,7 +253,7 @@ export const HouseholdModal: React.FC<HouseholdModalProps> = ({
                 <select
                   aria-label="Kitchen Primary Stove"
                   value={profile.cookingFuel}
-                  onChange={(e) => setProfile({ ...profile, cookingFuel: e.target.value as any })}
+                  onChange={(e) => setProfile({ ...profile, cookingFuel: e.target.value as HouseholdProfile['cookingFuel'] })}
                   className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-slate-900 dark:text-white"
                 >
                   <option value="lpg-cylinder">LPG Gas Cylinder (High NO2 Spike)</option>
@@ -268,7 +268,7 @@ export const HouseholdModal: React.FC<HouseholdModalProps> = ({
                 <select
                   aria-label="Daily Commute Mode"
                   value={profile.commuteMode}
-                  onChange={(e) => setProfile({ ...profile, commuteMode: e.target.value as any })}
+                  onChange={(e) => setProfile({ ...profile, commuteMode: e.target.value as HouseholdProfile['commuteMode'] })}
                   className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-slate-900 dark:text-white"
                 >
                   <option value="public-metro-electric-bus">Public Metro Rail / Electric Bus (Protected)</option>

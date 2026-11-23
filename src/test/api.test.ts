@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { NextRequest } from 'next/server';
 import { POST } from '../app/api/copilot/route';
 
 const mockGenerateContent = vi.fn();
@@ -20,12 +21,12 @@ describe('AeroPulse Copilot API Endpoint', () => {
   });
 
   it('rejects requests with missing message body', async () => {
-    const req = new Request('http://localhost:3000/api/copilot', {
+    const req = new NextRequest('http://localhost:3000/api/copilot', {
       method: 'POST',
       body: JSON.stringify({})
     });
 
-    const res = await POST(req as any);
+    const res = await POST(req);
     const json = await res.json();
 
     expect(res.status).toBe(400);
@@ -33,7 +34,7 @@ describe('AeroPulse Copilot API Endpoint', () => {
   });
 
   it('gracefully uses intelligent fallback engine when GEMINI_API_KEY is not set', async () => {
-    const req = new Request('http://localhost:3000/api/copilot', {
+    const req = new NextRequest('http://localhost:3000/api/copilot', {
       method: 'POST',
       body: JSON.stringify({
         message: 'How do I build a Corsi-Rosenthal box for winter smog?',
@@ -48,7 +49,7 @@ describe('AeroPulse Copilot API Endpoint', () => {
       })
     });
 
-    const res = await POST(req as any);
+    const res = await POST(req);
     const json = await res.json();
 
     expect(res.status).toBe(200);
@@ -66,7 +67,7 @@ describe('AeroPulse Copilot API Endpoint', () => {
       text: '### Customized Smog Strategy\nHere is your tailored defense.'
     });
 
-    const req = new Request('http://localhost:3000/api/copilot', {
+    const req = new NextRequest('http://localhost:3000/api/copilot', {
       method: 'POST',
       body: JSON.stringify({
         message: 'When should I open windows today?',
@@ -78,7 +79,7 @@ describe('AeroPulse Copilot API Endpoint', () => {
       })
     });
 
-    const res = await POST(req as any);
+    const res = await POST(req);
     const json = await res.json();
 
     expect(res.status).toBe(200);

@@ -5,8 +5,15 @@ import { AirQualityOverview } from '../components/AirQualityOverview';
 import { DirectImpactMeter } from '../components/DirectImpactMeter';
 import { HomeAirTwin } from '../components/HomeAirTwin';
 import { Header } from '../components/Header';
+import { DailyRoutineScheduler } from '../components/DailyRoutineScheduler';
+import { IAQHacksLibrary } from '../components/IAQHacksLibrary';
+import { SustainableAlternativesMatrix } from '../components/SustainableAlternativesMatrix';
+import { CommunityHub } from '../components/CommunityHub';
+import { HouseholdModal } from '../components/HouseholdModal';
+import { SmogEmergencyModal } from '../components/SmogEmergencyModal';
+import { CustomLocationModal } from '../components/CustomLocationModal';
 import { LOCATION_PRESETS, DEFAULT_HOUSEHOLD } from '../data/mockData';
-import { calculateDirectImpact } from '../utils/airCalculations';
+import { calculateDirectImpact, generateAdaptiveDailyRoutine } from '../utils/airCalculations';
 import { HomeTwinState } from '../types';
 
 describe('UI Components Render Suite', () => {
@@ -96,6 +103,116 @@ describe('UI Components Render Suite', () => {
     expect(screen.getByText(/\+ Sim/i)).toBeInTheDocument();
     fireEvent.click(screen.getByText(/\+ Sim/i));
     expect(onOpenCustomMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('renders DailyRoutineScheduler and handles action completion', () => {
+    const routines = generateAdaptiveDailyRoutine(delhi, DEFAULT_HOUSEHOLD);
+    const onCompleteMock = vi.fn();
+    render(
+      <DailyRoutineScheduler
+        routineItems={routines}
+        location={delhi}
+        household={DEFAULT_HOUSEHOLD}
+        onActionComplete={onCompleteMock}
+        onOpenCopilot={vi.fn()}
+      />
+    );
+
+    expect(screen.getByText(/Adaptive Low-Emission Daily Routine/i)).toBeInTheDocument();
+    const markButtons = screen.getAllByTitle(/Mark action completed/i);
+    expect(markButtons.length).toBeGreaterThan(0);
+    fireEvent.click(markButtons[0]);
+    expect(onCompleteMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('renders IAQHacksLibrary with interactive Corsi-Rosenthal calculator', () => {
+    render(<IAQHacksLibrary onOpenCopilot={vi.fn()} />);
+
+    expect(screen.getByText(/Indoor Air Quality \(IAQ\) Masterclass Hacks/i)).toBeInTheDocument();
+    expect(screen.getByText(/Needed CADR:/i)).toBeInTheDocument();
+    expect(screen.getByText(/Corsi-Rosenthal Box/i)).toBeInTheDocument();
+  });
+
+  it('renders SustainableAlternativesMatrix and allows pledging alternative', () => {
+    const onPledgeMock = vi.fn();
+    render(
+      <SustainableAlternativesMatrix
+        onOpenCopilot={vi.fn()}
+        onPledgeAlternative={onPledgeMock}
+      />
+    );
+
+    expect(screen.getByText(/Sustainable Alternatives Matrix/i)).toBeInTheDocument();
+    const pledgeButtons = screen.getAllByText(/Adopt This Alternative/i);
+    expect(pledgeButtons.length).toBeGreaterThan(0);
+    fireEvent.click(pledgeButtons[0]);
+    expect(onPledgeMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('renders CommunityHub with collective smog reduction tracking', () => {
+    const onPledgeUpdateMock = vi.fn();
+    render(<CommunityHub onPledgeUpdate={onPledgeUpdateMock} />);
+
+    expect(screen.getByText(/Community Smog Shield & Collective Action/i)).toBeInTheDocument();
+    const joinButtons = screen.getAllByText(/Join Initiative/i);
+    expect(joinButtons.length).toBeGreaterThan(0);
+    fireEvent.click(joinButtons[0]);
+    expect(onPledgeUpdateMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('renders HouseholdModal and allows updating demographics', () => {
+    const onSaveMock = vi.fn();
+    render(
+      <HouseholdModal
+        isOpen={true}
+        onClose={vi.fn()}
+        household={DEFAULT_HOUSEHOLD}
+        onSave={onSaveMock}
+      />
+    );
+
+    expect(screen.getByText(/Household & Lifestyle Profile/i)).toBeInTheDocument();
+    const saveButton = screen.getByText(/Apply & Recalculate/i);
+    expect(saveButton).toBeInTheDocument();
+    fireEvent.click(saveButton);
+    expect(onSaveMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('renders SmogEmergencyModal and executes crisis protocol', () => {
+    const onExecuteMock = vi.fn();
+    render(
+      <SmogEmergencyModal
+        isOpen={true}
+        onClose={vi.fn()}
+        location={delhi}
+        onExecuteProtocol={onExecuteMock}
+      />
+    );
+
+    expect(screen.getByText(/HAZARDOUS WINTER SMOG CRISIS PROTOCOL/i)).toBeInTheDocument();
+    const executeButton = screen.getByText(/Execute Crisis Protocol/i);
+    expect(executeButton).toBeInTheDocument();
+    fireEvent.click(executeButton);
+    expect(onExecuteMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('renders CustomLocationModal and loads atmospheric presets', () => {
+    const onApplyMock = vi.fn();
+    render(
+      <CustomLocationModal
+        isOpen={true}
+        onClose={vi.fn()}
+        onApplyLocation={onApplyMock}
+      />
+    );
+
+    expect(screen.getByText(/Custom Location & Atmospheric Simulator/i)).toBeInTheDocument();
+    expect(screen.getByText(/Wildfire Smoke Wave/i)).toBeInTheDocument();
+    expect(screen.getByText(/Stubble Burning Peak/i)).toBeInTheDocument();
+    const applyButton = screen.getByText(/Simulate & Apply Environment/i);
+    expect(applyButton).toBeInTheDocument();
+    fireEvent.click(applyButton);
+    expect(onApplyMock).toHaveBeenCalledTimes(1);
   });
 });
 

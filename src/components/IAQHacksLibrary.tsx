@@ -105,6 +105,20 @@ export const IAQHacksLibrary: React.FC<IAQHacksLibraryProps> = ({ onOpenCopilot 
               <span className="text-slate-500 dark:text-slate-400">ft</span>
             </div>
 
+            <div className="flex items-center gap-1.5 bg-white dark:bg-slate-900 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700">
+              <span className="text-slate-500 dark:text-slate-400">Target ACH:</span>
+              <select
+                aria-label="Target Air Changes per Hour"
+                value={targetACH}
+                onChange={(e) => setTargetACH(Number(e.target.value) || 5)}
+                className="bg-transparent text-slate-900 dark:text-white font-bold text-xs focus:outline-none cursor-pointer"
+              >
+                <option value={4} className="bg-white dark:bg-slate-900">4 ACH (Standard)</option>
+                <option value={5} className="bg-white dark:bg-slate-900">5 ACH (Optimal)</option>
+                <option value={6} className="bg-white dark:bg-slate-900">6 ACH (Severe Smog / Asthma)</option>
+              </select>
+            </div>
+
             <div className="bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 px-3.5 py-1.5 rounded-xl text-emerald-800 dark:text-emerald-300 font-bold">
               Needed CADR: <span className="text-slate-900 dark:text-white text-sm">{neededCFM} CFM</span>
             </div>

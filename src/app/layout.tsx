@@ -24,6 +24,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="min-h-screen antialiased selection:bg-emerald-500/20 selection:text-emerald-800 dark:selection:text-emerald-200">
+        <a 
+          href="#main-content" 
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-emerald-600 focus:text-white focus:rounded-xl focus:shadow-lg focus:outline-none"
+        >
+          Skip to main content
+        </a>
         {children}
       </body>
     </html>

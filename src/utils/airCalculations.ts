@@ -1,8 +1,12 @@
 import { LocationCity, HouseholdProfile, HomeTwinState, DirectImpactMetrics, DailyRoutineItem } from '../types';
 
 /**
- * Berkeley Earth peer-reviewed conversion rule:
+ * Calculates the daily cigarette equivalent dose of fine particulate (PM2.5) exposure.
+ * Based on the Berkeley Earth peer-reviewed epidemiological conversion rule:
  * 1 cigarette per day ≈ 22 µg/m³ of continuous PM2.5 exposure over 24 hours.
+ * 
+ * @param pm25Micrograms - Continuous 24-hour PM2.5 concentration in µg/m³
+ * @returns Number of cigarettes equivalent per person per day (rounded to 1 decimal place)
  */
 export function calculateCigarettesEquivalent(pm25Micrograms: number): number {
   if (pm25Micrograms <= 0) return 0;
@@ -10,11 +14,17 @@ export function calculateCigarettesEquivalent(pm25Micrograms: number): number {
 }
 
 /**
- * Calculates real-time indoor room concentrations based on physical dynamics:
- * - Outdoor ambient penetration through envelope
- * - Natural air infiltration rate (ACH)
- * - Active mechanical filtration (CADR)
- * - Indoor source generation (gas stove, dry broom resuspension)
+ * Simulates real-time multi-zone indoor particulate and gas dynamics:
+ * - Ambient infiltration governed by envelope leakage factor (drafty vs. hermetic)
+ * - Indoor source generation (gas stove combustion vs. electric induction)
+ * - Range hood exhaust capture and makeup air dynamics
+ * - Mechanical filtration (HEPA and Corsi-Rosenthal boxes)
+ * - Dust resuspension from dry sweeping vs. damp microfiber mopping
+ * 
+ * @param outdoorPm25 - Outdoor ambient PM2.5 level in µg/m³
+ * @param state - Current status of room windows, purifiers, doors, and stoves
+ * @param profile - Household architectural profile and vulnerability factors
+ * @returns Room-by-room PM2.5 (µg/m³), NO2 (ppb), and safety status
  */
 export function simulateHomeTwinRoomLevels(
   outdoorPm25: number,
@@ -96,8 +106,20 @@ export function simulateHomeTwinRoomLevels(
 }
 
 /**
- * Calculates direct health & environmental impact metrics
- * based on current habits vs recommended sustainable choices.
+ * Calculates direct health & environmental impact metrics comparing an unmitigated baseline
+ * against the user's active AeroPulse defense routine.
+ * 
+ * Computes:
+ * - Averted inhaled cigarette equivalents per person per day (Berkeley Earth model)
+ * - Deep alveolar lung particulate deposition cut percentage
+ * - Monthly community CO2 avoided from clean cooking and sustainable mobility
+ * - Tailpipe and tire-wear PM2.5 emissions prevented
+ * - Monthly financial savings from energy efficiency and Corsi-Rosenthal maintenance
+ * 
+ * @param location - Current ambient air status and primary pollutant
+ * @param profile - Family demographics and commute mode
+ * @param twinState - Active state of room filtration, stoves, and window seals
+ * @returns DirectImpactMetrics quantifying personal and collective benefits
  */
 export function calculateDirectImpact(
   location: LocationCity,
@@ -171,6 +193,15 @@ export function calculateDirectImpact(
 /**
  * Generates an adaptive, hour-by-hour low-emission daily routine
  * tailored to today's thermal inversion dynamics and family vulnerabilities.
+ * 
+ * Synchronizes activities to atmospheric boundary layer cycles:
+ * - Seals home during early morning nocturnal inversion traps (6:30 - 8:30 AM)
+ * - Identifies the optimal solar zenith ventilation window (12:30 - 2:30 PM)
+ * - Adjusts protocols dynamically if infants, asthmatics, or seniors are present
+ * 
+ * @param location - Current atmospheric status, diurnal curve, and AQI
+ * @param profile - Household members, sensitivities, and transit mode
+ * @returns Array of tailored daily routine items with quantified direct impacts
  */
 export function generateAdaptiveDailyRoutine(
   location: LocationCity,
@@ -250,8 +281,21 @@ export function generateAdaptiveDailyRoutine(
 }
 
 /**
- * Creates a physically coherent LocationCity from custom user inputs
- * with realistic atmospheric ratios and 24-hour diurnal inversion modeling.
+ * Synthesizes a physically coherent custom urban environment and atmospheric profile
+ * from baseline PM2.5 and temperature parameters.
+ * 
+ * Computes:
+ * - US EPA / CPCB AQI breakpoint mapping
+ * - Realistic particulate and combustion gas ratios (PM10, NO2, CO, SO2, O3)
+ * - Complete 24-hour diurnal thermal inversion curve with hourly inversion layer heights
+ * 
+ * @param name - Location or city name
+ * @param country - Country or region
+ * @param neighborhood - Specific monitoring station or micro-basin
+ * @param basePm25 - Baseline PM2.5 particulate concentration in µg/m³
+ * @param temperatureC - Ambient temperature in Celsius (defaults to 16°C)
+ * @param inversionCeilingMeters - Boundary layer height in meters (defaults to 180m)
+ * @returns Fully instantiated LocationCity profile ready for simulation
  */
 export function createCustomLocation(
   name: string,

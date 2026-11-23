@@ -113,7 +113,7 @@ COMMUNICATION DIRECTIVES:
 
         const response = await ai.models.generateContent({
           model: 'gemini-2.5-flash',
-          contents: contentsPayload as any
+          contents: contentsPayload
         });
 
         const replyText = response.text || 'Unable to generate response. Please try again.';

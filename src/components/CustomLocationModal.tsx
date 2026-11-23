@@ -99,7 +99,7 @@ export const CustomLocationModal: React.FC<CustomLocationModalProps> = ({
         onApplyLocation(loc);
         onClose();
       },
-      (err) => {
+      () => {
         setGeoLoading(false);
         // Fallback simulated local location
         const loc = createCustomLocation(

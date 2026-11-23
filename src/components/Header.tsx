@@ -12,7 +12,6 @@ import {
   ShieldCheck,
   Layers,
   Thermometer,
-  Compass,
   Sun,
   Moon,
   FileText

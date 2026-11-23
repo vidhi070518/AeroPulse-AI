@@ -1,5 +1,7 @@
 export type AQISeverity = 'good' | 'moderate' | 'unhealthy-sensitive' | 'unhealthy' | 'very-unhealthy' | 'hazardous';
 
+export type NavigationTab = 'overview' | 'home-twin' | 'routines' | 'iaq-hacks' | 'alternatives' | 'community' | 'all';
+
 export interface DiurnalHourData {
   hour: number;
   timeLabel: string;

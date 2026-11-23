@@ -13,8 +13,7 @@ import {
   Sparkles,
   ArrowRightLeft,
   CheckCircle2,
-  AlertOctagon,
-  Wind
+  AlertOctagon
 } from 'lucide-react';
 
 interface DirectImpactMeterProps {
