@@ -33,6 +33,20 @@ describe('AeroPulse Copilot API Endpoint', () => {
     expect(json.success).toBe(false);
   });
 
+  it('rejects requests exceeding maximum character limit', async () => {
+    const req = new NextRequest('http://localhost:3000/api/copilot', {
+      method: 'POST',
+      body: JSON.stringify({ message: 'a'.repeat(2500) })
+    });
+
+    const res = await POST(req);
+    const json = await res.json();
+
+    expect(res.status).toBe(400);
+    expect(json.success).toBe(false);
+    expect(json.error).toContain('maximum allowed length');
+  });
+
   it('gracefully uses intelligent fallback engine when GEMINI_API_KEY is not set', async () => {
     const req = new NextRequest('http://localhost:3000/api/copilot', {
       method: 'POST',

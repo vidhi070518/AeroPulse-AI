@@ -42,9 +42,16 @@ export async function POST(req: NextRequest) {
     const body = (await req.json()) as CopilotRequestBody;
     const { message, history, location, household, roomPm25 } = body;
 
-    if (!message || typeof message !== 'string') {
+    if (!message || typeof message !== 'string' || message.trim().length === 0) {
       return NextResponse.json(
         { success: false, error: 'Message text is required' },
+        { status: 400 }
+      );
+    }
+
+    if (message.length > 2000) {
+      return NextResponse.json(
+        { success: false, error: 'Message exceeds maximum allowed length of 2000 characters' },
         { status: 400 }
       );
     }
