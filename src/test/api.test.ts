@@ -1,6 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { NextRequest } from 'next/server';
 import { POST } from '../app/api/copilot/route';
+import { 
+  generateSmartSuggestions, 
+  generateExpertFallbackResponse 
+} from '../utils/copilotFallback';
 
 const mockGenerateContent = vi.fn();
 
@@ -100,6 +104,30 @@ describe('AeroPulse Copilot API Endpoint', () => {
     expect(json.success).toBe(true);
     expect(json.data.source).toBe('gemini-2.5-flash');
     expect(json.data.reply).toContain('Customized Smog Strategy');
+  });
+
+  it('generates context-aware smart suggestions based on query intent', () => {
+    const infantSuggestions = generateSmartSuggestions('How to protect my baby from smog', 350);
+    expect(infantSuggestions.some(s => s.toLowerCase().includes('nursery'))).toBe(true);
+
+    const maskSuggestions = generateSmartSuggestions('Which N95 mask to buy', 280);
+    expect(maskSuggestions.some(s => s.toLowerCase().includes('n95'))).toBe(true);
+
+    const cookingSuggestions = generateSmartSuggestions('Gas stove vs induction', 310);
+    expect(cookingSuggestions.some(s => s.toLowerCase().includes('induction'))).toBe(true);
+  });
+
+  it('generates domain-accurate fallback responses for ventilation, pets, and induction', () => {
+    const ventResponse = generateExpertFallbackResponse('When should I ventilate?');
+    expect(ventResponse).toContain('Thermal Inversion Ventilation');
+    expect(ventResponse).toContain('12:30 PM');
+
+    const petResponse = generateExpertFallbackResponse('How to protect my dog?');
+    expect(petResponse).toContain('Pet Respiratory Protection');
+
+    const kitchenResponse = generateExpertFallbackResponse('Is induction stove better?');
+    expect(kitchenResponse).toContain('Kitchen Air Defense');
+    expect(kitchenResponse).toContain('Induction');
   });
 });
 

@@ -12,6 +12,7 @@ import { CommunityHub } from '../components/CommunityHub';
 import { HouseholdModal } from '../components/HouseholdModal';
 import { SmogEmergencyModal } from '../components/SmogEmergencyModal';
 import { CustomLocationModal } from '../components/CustomLocationModal';
+import { ReportModal } from '../components/ReportModal';
 import { LOCATION_PRESETS, DEFAULT_HOUSEHOLD } from '../data/mockData';
 import { calculateDirectImpact, generateAdaptiveDailyRoutine } from '../utils/airCalculations';
 import { HomeTwinState } from '../types';
@@ -213,6 +214,29 @@ describe('UI Components Render Suite', () => {
     expect(applyButton).toBeInTheDocument();
     fireEvent.click(applyButton);
     expect(onApplyMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('renders ReportModal with clean air action brief and metrics', () => {
+    const metrics = calculateDirectImpact(delhi, DEFAULT_HOUSEHOLD, twinState);
+    const onCopyMock = vi.fn();
+    render(
+      <ReportModal
+        isOpen={true}
+        onClose={vi.fn()}
+        currentLocation={delhi}
+        airShieldScore={92}
+        impactMetrics={metrics}
+        onCopyPlan={onCopyMock}
+      />
+    );
+
+    expect(screen.getByText(/Household Clean Air Action Brief/i)).toBeInTheDocument();
+    expect(screen.getByText(/Overall Air Shield/i)).toBeInTheDocument();
+    expect(screen.getByText(/92% Optimal/i)).toBeInTheDocument();
+    const copyBtn = screen.getByText(/Copy Plan/i);
+    expect(copyBtn).toBeInTheDocument();
+    fireEvent.click(copyBtn);
+    expect(onCopyMock).toHaveBeenCalledTimes(1);
   });
 });
 
